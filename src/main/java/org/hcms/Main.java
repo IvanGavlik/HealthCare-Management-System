@@ -1,4 +1,9 @@
-package org.example;
+package org.hcms;
+import org.hcms.admin.Admin;
+import org.hcms.doctor.Doctor;
+import org.hcms.patient.Patients;
+import org.hcms.util.ConnectionProvider;
+
 import java.sql.*;
 import java.util.Scanner;
 
@@ -131,7 +136,7 @@ public class Main
 		    	System.out.print("ID:");id=sc.nextInt();
 		    	System.out.print("Password:");pd=sc.next();
 		    	try {
-					Connection con=ConnectionProvider.getCon();
+					Connection con= ConnectionProvider.getCon();
 					Statement st=con.createStatement();
 					ResultSet rs=st.executeQuery("Select * from Users");
 					while(rs.next()) {

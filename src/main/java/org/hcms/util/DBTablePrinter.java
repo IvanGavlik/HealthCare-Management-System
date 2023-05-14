@@ -1,4 +1,4 @@
-package org.example;
+package org.hcms.util;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

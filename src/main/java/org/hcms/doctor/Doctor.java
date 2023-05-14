@@ -1,5 +1,10 @@
 /**********************************************************|Doctor Class|*********************************************************/
-package org.example;
+package org.hcms.doctor;
+import org.hcms.admin.Register;
+import org.hcms.person.Person;
+import org.hcms.report.Report;
+import org.hcms.util.ConnectionProvider;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -76,7 +81,7 @@ public class Doctor extends Person
 	public void ShowDoctorDetails(int d)//This function Show All Details Of the doctor//
 	{
 		try {
-    		Connection con=ConnectionProvider.getCon();
+    		Connection con= ConnectionProvider.getCon();
     		Statement st=con.createStatement();
     		ResultSet rs=st.executeQuery("Select * from Doctors where DoctorID="+d);
     		while(rs.next())

@@ -1,4 +1,6 @@
-package org.example;
+package org.hcms.appointment;
+
+import org.hcms.util.ConnectionProvider;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -23,7 +25,7 @@ public class Appointment
 	{
 		int appID=0;
 		try{
-			Connection con=ConnectionProvider.getCon();
+			Connection con= ConnectionProvider.getCon();
 			Statement st=con.createStatement();
 			ResultSet rs=st.executeQuery("Select MAX(AppointmentID) from Appointments");
 			rs.next();

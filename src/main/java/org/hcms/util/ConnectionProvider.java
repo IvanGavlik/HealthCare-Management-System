@@ -1,4 +1,4 @@
-package org.example;
+package org.hcms.util;
 import java.sql.*;
 public class ConnectionProvider {
 	public static Connection getCon()

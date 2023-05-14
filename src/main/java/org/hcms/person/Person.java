@@ -1,4 +1,4 @@
-package org.example;
+package org.hcms.person;
 import java.util.Date;
 import java.util.Scanner;
 public class Person 

@@ -1,4 +1,9 @@
-package org.example;
+package org.hcms.admin;
+import org.hcms.util.ConnectionProvider;
+import org.hcms.util.DBTablePrinter;
+import org.hcms.person.Person;
+import org.hcms.report.Report;
+
 import java.sql.*;
 import java.util.*;
 public class Admin extends Person
@@ -9,7 +14,7 @@ public class Admin extends Person
 	{
 		int docid=0;
 		try{
-			Connection con=ConnectionProvider.getCon();
+			Connection con= ConnectionProvider.getCon();
 			Statement st=con.createStatement();
 			ResultSet rs=st.executeQuery("Select MAX(UserID) as NextUserID from Users where userType='Doctor'");
 			rs.next();

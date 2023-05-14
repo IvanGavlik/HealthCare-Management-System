@@ -1,5 +1,11 @@
  //***********************************PATIENT-CLASS***********************************//
-package org.example;
+package org.hcms.patient;
+import org.hcms.admin.Register;
+import org.hcms.appointment.Appointment;
+import org.hcms.person.Person;
+import org.hcms.util.ConnectionProvider;
+import org.hcms.util.DBTablePrinter;
+
 import java.sql.*;
 
 import java.util.Scanner;
@@ -12,7 +18,7 @@ public class Patients extends Person//patient class Inheriting from person class
 	{
 		int id_Patient=0;
 		try{
-			Connection con=ConnectionProvider.getCon();
+			Connection con= ConnectionProvider.getCon();
 			Statement st=con.createStatement();
 			ResultSet rs=st.executeQuery("Select MAX(userID) as 'NextPatientID' from Users");
 			rs.next();

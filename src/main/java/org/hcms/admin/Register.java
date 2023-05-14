@@ -1,4 +1,6 @@
-package org.example;
+package org.hcms.admin;
+import org.hcms.util.ConnectionProvider;
+
 import java.sql.*;
 
 public class Register 
@@ -9,7 +11,7 @@ public class Register
 	{
 		try 
 		{
-			Connection con=ConnectionProvider.getCon();
+			Connection con= ConnectionProvider.getCon();
 			Statement st=con.createStatement();
 			st.executeUpdate("INSERT INTO Patients VALUES ('"+pid+"','"+fn+"','"+ln+"','"+G+"','"+cn+"','"+age+"','"+Eid+"','"+BloodGroup+"','"+Address+"')");
 			System.out.println("Registered Succesfully!!");

@@ -1,4 +1,7 @@
-package org.example;
+package org.hcms.report;
+
+import org.hcms.util.ConnectionProvider;
+import org.hcms.util.DBTablePrinter;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,7 +22,7 @@ public class Report
 	{
 		int repID=0;
 		try{
-			Connection con=ConnectionProvider.getCon();
+			Connection con= ConnectionProvider.getCon();
 			Statement st=con.createStatement();
 			ResultSet rs=st.executeQuery("Select MAX(ReportId) as NextUserID from Reports");
 			rs.next();
