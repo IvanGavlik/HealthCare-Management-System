@@ -2,36 +2,38 @@
 package org.hcms.patient;
 import org.hcms.admin.Register;
 import org.hcms.appointment.Appointment;
+import org.hcms.data.Repository;
 import org.hcms.person.Person;
-import org.hcms.util.ConnectionProvider;
 import org.hcms.util.DBTablePrinter;
 
 import java.sql.*;
 
+import java.util.List;
 import java.util.Scanner;
-public class Patients extends Person//patient class Inheriting from person class//
-{
+import java.util.function.Function;
+
+ public class Patients extends Person {
 	Scanner sc=new Scanner(System.in);
     String BloodGroup ;
-    /***********************************************************************************************/ 
-    private int AutoPatientID()///This Method of Patient Class Generates the id of patient 
-	{
-		int id_Patient=0;
-		try{
-			Connection con= ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			ResultSet rs=st.executeQuery("Select MAX(userID) as 'NextPatientID' from Users");
-			rs.next();
-			id_Patient= rs.getInt(1);
-			if(rs.wasNull())
-			{
-				return 1;
+    /***********************************************************************************************/
+	///This Method of Patient Class Generates the id of patient
+    private int AutoPatientID()  {
+
+		Function <ResultSet, Integer> mapper = resultSet -> {
+			try {
+				return resultSet.getInt(1);
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
 			}
-		}catch(Exception e)
-		{
-			System.out.println(e.getMessage());
+		};
+
+		List<Integer> result = Repository.getInstance()
+				.executeQuery("Select MAX(userID) as 'NextPatientID' from Users", mapper);
+
+		if (result.isEmpty()) {
+			return 1;
 		}
-		return id_Patient+1;
+		return result.get(0) + 1;
 	}
     /***********************************************************************************************/
     public int addPatient() 
@@ -54,15 +56,13 @@ public class Patients extends Person//patient class Inheriting from person class
 				System.out.println("*\tRE-ENTER The Password*");
 			}
 		}
-		try
-		{
-			Connection con=ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			st.executeUpdate("insert into Users values('"+PatientID+"','"+"Patient"+"','"+password+"')");
+		boolean done = Repository.getInstance()
+				.executeUpdate("insert into Users values('"+PatientID+"','"+"Patient"+"','"+password+"')");
+
+		if (done) {
 			System.out.println("Registered Succesfully!!");
-		}catch(Exception e)
-		{
-			System.out.println(e.getMessage());
+		} else {
+			System.out.println("Registered failed");
 		}
 		return PatientID;
 		
@@ -75,47 +75,44 @@ public class Patients extends Person//patient class Inheriting from person class
     	System.out.println("BloodGroup:");
     	BloodGroup=sc.next();
     	Register reg=new Register();
-    	reg.patient_Registration(pid,First_Name,Last_Name,Gender,CN,age,Email_Address,BloodGroup,Address);
+    	reg.patientRegistration(pid,First_Name,Last_Name,Gender,CN,age,Email_Address,BloodGroup,Address);
  
     }
-    /***********************************************************************************************/ 
-    public void ShowPatientDetails(int id)/*This method all details of the patient*/
-    {
-    	try {
-    		Connection con=ConnectionProvider.getCon();
-    		Statement st=con.createStatement();
-    		ResultSet rs=st.executeQuery("Select * from Patients where PatientID="+id);
-    		while(rs.next())
-    		{ 
-    			System.out.println("PatientID:      "+rs.getInt(1));
-    			System.out.println("Name:           "+rs.getString(2)+" "+rs.getString(3));
-    			System.out.println("Blood-Group:    "+rs.getString(8));
-    			System.out.println("Address:        "+rs.getString(9));
-    			System.out.println("Contact-Number: "+rs.getString(5));
-    			System.out.print("\t********************\n");
-    		}
-    	}
-    	catch(Exception e)
-    	{
-    		System.out.println(e.getMessage());
-    	}
+	 /*This method all details of the patient*/
+	public void ShowPatientDetails(int id) {
+		Function<ResultSet, String> mapper = resultSet -> {
+			try {
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder
+						.append("PatientID:      "+resultSet.getInt(1))
+						.append("Name:           "+resultSet.getString(2)+" "+resultSet.getString(3))
+						.append("Blood-Group:    "+resultSet.getString(8))
+						.append("Address:        "+resultSet.getString(9))
+						.append("Contact-Number: "+resultSet.getString(5))
+						.append("\t********************\n");
+
+				return stringBuilder.toString();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+
+		};
+
+		Repository.getInstance()
+				.executeQuery("Select * from Patients where PatientID="+id, mapper)
+				.forEach(System.out::println);
+
 	}  
     /***********************************************************************************************/
     
-    public void viewDoctor()
-    {
-		try 
-		{
-			Connection con=ConnectionProvider.getCon();
-			DBTablePrinter.printTable(con, "Doctors");
-			con.close();
+    public void viewDoctor() {
+		DBTablePrinter.printTable(Repository.getInstance().getConnection(), "Doctors");
+		try {
+			Repository.getInstance().getConnection().close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
-		catch(Exception e)
-		{ 
-			System.out.println("EXCEPTION OCCURS"+e.getMessage());
-		}  
-		
-    }
+	}
     /***********************************************************************************************/  
     public void BookAppointment(int id) 
     {
@@ -123,102 +120,98 @@ public class Patients extends Person//patient class Inheriting from person class
     	ap.BookAppointment(id);  
     	
     }
-    /***********************************************************************************************/     
-    public void viewAppointment(int id) 
-    {
-    	int t=0;
-		try {
-    		Connection con=ConnectionProvider.getCon();
-    		Statement st=con.createStatement();
-    		ResultSet rs=st.executeQuery("Select * from  Appointments where PatientID="+id);
-    		while(rs.next())
-    		{
-	    			t++;
-	    			System.out.println("\t*** APPOINTMENT - NUMBER : "+t);
-					System.out.print("\t* Appointment_ID : "+rs.getInt(1)+"                          \n");
-					System.out.print("\t* Problem  :       "+rs.getString(2)+"                       \n");
-					System.out.print("\t* PatientId :      "+rs.getInt(3)+"                          \n");
-					System.out.print("\t* Doctor_Id :      "+rs.getInt(5)+"                          \n");
-					System.out.print("\t* DoctorFees :     "+rs.getString(8)+"                       \n");
-					System.out.print("\t* PaymentStatus :  "+rs.getString(9)+"                       \n");
-					System.out.print("\t*************************************************************\n");	
-    		}
-    		
-    	}
-    	catch(Exception e)
-    	{
-    		System.out.println(e.getMessage());
-    	}
-		if(t==0)
-		{
+
+    public void viewAppointment(int id) {
+
+		Function <ResultSet, String> mapper = resultSet -> {
+			try {
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder
+						.append("\t*** APPOINTMENT:")
+						.append("\t* Appointment_ID : "+resultSet.getInt(1)+"                          \n")
+						.append("\t* Problem  :       "+resultSet.getString(2)+"                       \n")
+						.append("\t* PatientId :      "+resultSet.getInt(3)+"                          \n")
+						.append("\t* Doctor_Id :      "+resultSet.getInt(5)+"                          \n")
+						.append("\t* DoctorFees :     "+resultSet.getString(8)+"                       \n")
+						.append("\t* PaymentStatus :  "+resultSet.getString(9)+"                       \n")
+						.append("\t*************************************************************\n");
+				return stringBuilder.toString();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		};
+
+		List<String> result = Repository.getInstance()
+				.executeQuery("Select * from  Appointments where PatientID="+id, mapper); // todo SQL DATE in the future
+
+		if(result.isEmpty()) {
 			System.out.println("*******You Currently Have No Appointments********");
 			System.out.println("Enter 3 To Book Appointment!!");
+		} else {
+			result.forEach(System.out::println);
 		}
     	
     }
-    public void AppointmentHistory(int id) 
-    {
-    	int t=0;
-		try {
-    		Connection con=ConnectionProvider.getCon();
-    		Statement st=con.createStatement();
-    		ResultSet rs=st.executeQuery("Select * from  Appointments where PatientID="+id);
-    		while(rs.next())
-    		{
-    			if(rs.getString(10).compareTo("Completed")==0)
-    			{
-	    			t++;
-	    			System.out.println("\t*** APPOINTMENT - NUMBER : "+t);
-					System.out.print("\t* Appointment_ID : "+rs.getInt(1)+"                          \n");
-					System.out.print("\t* Problem  :       "+rs.getString(2)+"                       \n");
-					System.out.print("\t* PatientId :      "+rs.getInt(3)+"                          \n");
-					System.out.print("\t* Doctor_Id :      "+rs.getInt(5)+"                          \n");
-					System.out.print("\t* DoctorFees :     "+rs.getString(8)+"                       \n");
-					System.out.print("\t* PaymentStatus :  "+rs.getString(9)+"                       \n");
-					System.out.print("\t*************************************************************\n");	
-    			}
-    		}
-    		
-    	}
-    	catch(Exception e)
-    	{
-    		System.out.println(e.getMessage());
-    	}
-		if(t==0)
-		{
-			System.out.println("*******You Have No Past Appointments********");
-		}
-    	
-    }
-    /***********************************************************************************************/  
-    public void ViewReport(int id)
-    {
-    	int checkReport=0;
-    	try {
-    		Connection con=ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			ResultSet rs=st.executeQuery("select * from Reports where PatientID = "+id);
-			while(rs.next())
-			{
-				System.out.print("\t* ReportID  :         "+rs.getInt(1)+"                          \n");
-				System.out.print("\t* Appointment_ID :    "+rs.getInt(2)+"                          \n");
-				System.out.print("\t* PatientId :         "+rs.getInt(3)+"                          \n");
-				System.out.print("\t* Doctor_Id :         "+rs.getInt(4)+"                          \n");
-				System.out.print("\t* MedicinePrescribed :"+rs.getString(5)+"                       \n");
-				System.out.print("\t* Doctor's Message:"+rs.getString(6)+"                          \n");
-				System.out.print("\t*************************************************************\n");	
-				checkReport++;
+    public void AppointmentHistory(int id)  {
+		Function <ResultSet, String> mapper = resultSet -> {
+			try {
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder
+						.append("\t*** APPOINTMENT:")
+						.append("\t* Appointment_ID : "+resultSet.getInt(1)+"                          \n")
+						.append("\t* Problem  :       "+resultSet.getString(2)+"                       \n")
+						.append("\t* PatientId :      "+resultSet.getInt(3)+"                          \n")
+						.append("\t* Doctor_Id :      "+resultSet.getInt(5)+"                          \n")
+						.append("\t* DoctorFees :     "+resultSet.getString(8)+"                       \n")
+						.append("\t* PaymentStatus :  "+resultSet.getString(9)+"                       \n")
+						.append("\t*************************************************************\n");
+				return stringBuilder.toString();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
 			}
-    	}catch(Exception e) {
-    		System.out.println(e.getMessage());
-    	}
-    	if(checkReport==0)
-    			System.out.println("*************************You Have No Report Generated**********************************");
+		};
+
+		List<String> result = Repository.getInstance()
+				.executeQuery("Select * from  Appointments where PatientID="+id, mapper); // todo SQL DATE in the past
+
+		if(result.isEmpty()) {
+			System.out.println("*******You Have No Past Appointments********");
+		} else {
+			result.forEach(System.out::println);
+		}
+    }
+
+    public void ViewReport(int id)  {
+
+		Function <ResultSet, String> mapper = resultSet -> {
+			try {
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder
+						.append("\t* ReportID  :         "+resultSet.getInt(1)+"                          \n")
+						.append("\t* Appointment_ID :    "+resultSet.getInt(2)+"                          \n")
+						.append("\t* PatientId :         "+resultSet.getInt(3)+"                          \n")
+						.append("\t* Doctor_Id :         "+resultSet.getInt(4)+"                          \n")
+						.append("\t* MedicinePrescribed :"+resultSet.getString(5)+"                       \n")
+						.append("\t* Doctor's Message:"+resultSet.getString(6)+"                          \n")
+						.append("\t*************************************************************\n");
+				return stringBuilder.toString();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		};
+
+		List<String> result = Repository.getInstance()
+				.executeQuery("select * from Reports where PatientID = "+id, mapper); // todo SQL DATE in the past
+
+		if(result.isEmpty()) {
+			System.out.println("*************************You Have No Report Generated**********************************");
+		} else {
+			result.forEach(System.out::println);
+		}
     	
     }
-    /***********************************************************************************************/ 
-    public void Givefeedback(int id) /*To give Feedback*/
-    {
+	 /*To give Feedback*/
+    public void Givefeedback(int id)  {
     	System.out.println("*********Please Fill The Following Feedback Form*********");
     	int pid=id;
     	System.out.println("Patient Id:"+pid);
@@ -233,17 +226,15 @@ public class Patients extends Person//patient class Inheriting from person class
     	System.out.println("Your Comment:");
     	String YourComment = sc.next();
     	YourComment +=sc.nextLine();
-    	try {
-			Connection con=ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			st.executeUpdate("INSERT INTO feedback VALUES ('"+pid+"','"+points+"','"+Doc_Nature+"','"+Location+"','"+YourComment+"')");
+
+		boolean done = Repository.getInstance()
+				.executeUpdate("INSERT INTO feedback VALUES ('"+pid+"','"+points+"','"+Doc_Nature+"','"+Location+"','"+YourComment+"')");
+
+		if (done) {
 			System.out.println("-->>Thank You For Visiting Us<<--");
-	    	System.out.println("-->>Your Feedback Meant a lot to Us<<--");
-		}catch(Exception e)
-		{
-			System.out.println(e.getMessage());
+			System.out.println("-->>Your Feedback Meant a lot to Us<<--");
+		} else {
+			System.out.println("-->>Adding Feedback Failed<<--");
 		}
     }
-    /***********************************************************************************************/ 
-	
 }

@@ -1,12 +1,13 @@
 package org.hcms.report;
 
-import org.hcms.util.ConnectionProvider;
+import org.hcms.data.Repository;
 import org.hcms.util.DBTablePrinter;
 
-import java.sql.Connection;
+
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class Report
 {
@@ -18,24 +19,21 @@ public class Report
 	private String MedicinePrescribed;
 	private String DoctorsComment;
 	/***********************************************************************************************/ 
-	private int AutoReportID()/**/
-	{
-		int repID=0;
-		try{
-			Connection con= ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			ResultSet rs=st.executeQuery("Select MAX(ReportId) as NextUserID from Reports");
-			rs.next();
-			repID=rs.getInt(1);
-			if(rs.wasNull())
-			{
-				return 1;
+	private int AutoReportID() {
+		Function<ResultSet, Integer> mapper = (rs) -> {
+			try {
+				return rs.getInt(1);
+			} catch (Exception ex) {
+				throw new RuntimeException();
 			}
-		}catch(Exception e)
-		{
-			System.out.println(e.getMessage());
+		};
+		List<Integer> result =  Repository.getInstance()
+				.executeQuery("Select MAX(ReportId) as NextUserID from Reports", mapper);
+
+		if (result.isEmpty()) {
+			return 1;
 		}
-		return repID+1;
+		return result.get(0) + 1;
 	}
 	/***********************************************************************************************/ 
 	public void DiagonistReport(int pid,int appid,int docid)/*This Method*/
@@ -65,41 +63,34 @@ public class Report
 		}
 	}
 	/***********************************************************************************************/ 
-	public void GenerateReport()/**/
-	{
-		try {
-			Connection con=ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			st.executeUpdate("INSERT INTO Reports VALUES ('"+RepId+"','"+appid+"','"+pid+"','"+docid+"','"+MedicinePrescribed+"','"+DoctorsComment+"')");
+	public void GenerateReport() {
+		boolean done = Repository.getInstance()
+				.executeUpdate("INSERT INTO Reports VALUES ('"+RepId+"','"+appid+"','"+pid+"','"+docid+"','"+MedicinePrescribed+"','"+DoctorsComment+"')");
+		if (done) {
 			System.out.println("Report Generated Succesfully!!!");
-			ChangeStatus();
-		}catch(Exception e)
-		{
-			System.out.println(e.getMessage());
+		} else {
+			System.out.println("Report not generated!!!");
 		}
 	}
-	private void ChangeStatus()//changes the status of appointment from pending to completed
-	{
-		try {
-			Connection con=ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			st.executeUpdate("UPDATE Appointments SET Appointment_Status='Completed' WHERE AppointmentID="+appid);
+	//changes the status of appointment from pending to completed
+	/***********************************************************************************************/
+
+	/*Shows all reports that are being generated*/
+	public void ShowReport() {
+		try  {
+			DBTablePrinter.printTable(Repository.getInstance().getConnection(), "Reports");
 		}
-		catch(Exception e)
-		{
-			System.out.println("e.getMessage()");
+		catch(Exception e) {
+			System.out.println("EXCEPTION OCCURS"+e.getMessage());
 		}
 	}
-	/***********************************************************************************************/ 
-	public void ShowReport()/*Shows all reports that are being generated*/
-	{
-		try 
-		{
-			Connection con=ConnectionProvider.getCon();
-			DBTablePrinter.printTable(con, "Reports");
+	private void ChangeStatus() {
+		boolean done = Repository.getInstance()
+				.executeUpdate("UPDATE Appointments SET Appointment_Status='Completed' WHERE AppointmentID="+appid);
+		if (done) {
+			System.out.println("ChangeStatus Succesfully!!!");
+		} else {
+			System.out.println("ChangeStatus failed!!!");
 		}
-		catch(Exception e)
-		{ System.out.println("EXCEPTION OCCURS"+e.getMessage());}  
 	}
-	/***********************************************************************************************/ 
 }

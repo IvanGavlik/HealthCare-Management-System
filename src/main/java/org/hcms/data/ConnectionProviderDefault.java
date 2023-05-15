@@ -1,6 +1,6 @@
-package org.hcms.util;
+package org.hcms.data;
 import java.sql.*;
-public class ConnectionProvider {
+public class ConnectionProviderDefault {
 	public static Connection getCon()
 	{
 		try {

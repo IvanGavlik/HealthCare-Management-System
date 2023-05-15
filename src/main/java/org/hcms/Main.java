@@ -1,11 +1,13 @@
 package org.hcms;
 import org.hcms.admin.Admin;
+import org.hcms.data.Repository;
 import org.hcms.doctor.Doctor;
 import org.hcms.patient.Patients;
-import org.hcms.util.ConnectionProvider;
 
 import java.sql.*;
 import java.util.Scanner;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Main 
 {
@@ -135,21 +137,26 @@ public class Main
 		    	String pd;
 		    	System.out.print("ID:");id=sc.nextInt();
 		    	System.out.print("Password:");pd=sc.next();
-		    	try {
-					Connection con= ConnectionProvider.getCon();
-					Statement st=con.createStatement();
-					ResultSet rs=st.executeQuery("Select * from Users");
-					while(rs.next()) {
-						if(rs.getInt(1)==id && rs.getString(2).compareTo("Patient")==0 && (rs.getString(3).compareTo(pd)==0 ))
-						{
-							flag=1;
+
+				Function<ResultSet, Integer> mapper = rs -> {
+					try {
+						if(rs.getInt(1)==id
+								&& rs.getString(2).compareTo("Patient")==0
+								&& (rs.getString(3).compareTo(pd)==0 ))  {
+							return 1;
 						}
+						return -1;
+					} catch (SQLException e) {
+						throw new RuntimeException(e);
 					}
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-		    	if(flag==1)
-		    	{
+				};
+				flag = Repository.getInstance().executeQuery("Select * from Users", mapper)
+						.stream()
+						.filter( el -> el == 1)
+						.collect(Collectors.toList())
+						.get(0);
+
+		    	if(flag==1) {
 		    		p=new Patients();
 		    		while(true)
 		    		{
@@ -224,7 +231,7 @@ public class Main
 	    		}
 		    	break;
 		    }
-		    /***********************************************************************************************/ 		    
+
 		    case 3: //For Doctor
 		    {
 		    	boolean checkDoctor = false;
@@ -234,18 +241,24 @@ public class Main
 		    	String pd;
 		    	System.out.print("DOCTOR - ID : ");id=sc.nextInt();
 		    	System.out.print("Password : ");pd=sc.next();
-		    	try {
-		    		Connection con=ConnectionProvider.getCon();
-					Statement st=con.createStatement();
-					ResultSet rs=st.executeQuery("Select * from Users");
-					while(rs.next()) {
-						if(rs.getInt(1)==id && rs.getString(2).compareTo("Doctor")==0 && (rs.getString(3).compareTo(pd)==0 )){
-							flag=1;
+
+				Function<ResultSet, Integer> mapper = rs -> {
+					try {
+						if(rs.getInt(1)==id
+								&& rs.getString(2).compareTo("Doctor")==0
+								&& (rs.getString(3).compareTo(pd)==0 )){
+							return 1;
 						}
+						return -1;
+					} catch (SQLException e) {
+						throw new RuntimeException(e);
 					}
-				}catch(Exception e){
-					System.out.println("Not Registerd");
-				}
+				};
+				flag = Repository.getInstance().executeQuery("Select * from Users", mapper)
+						.stream()
+						.filter( el -> el == 1)
+						.collect(Collectors.toList())
+						.get(0);
 		    	if(flag==1)
 		    	{
 		    		while(true)
@@ -264,7 +277,7 @@ public class Main
 		    				case 1:
 		    				{
 		    					d=new Doctor();
-		    					d.ShowDoctorDetails(id);
+		    					d.showDoctorDetails(id);
 		    					break;
 		    				}
 		    				case 2:
@@ -276,7 +289,7 @@ public class Main
 		    				case 3:
 		    				{
 		    					d=new Doctor();
-		    					d.DiagonistPatient(id);
+		    					d.diagonistPatient(id);
 		    					break;
 		    				}
 		    				case 4:

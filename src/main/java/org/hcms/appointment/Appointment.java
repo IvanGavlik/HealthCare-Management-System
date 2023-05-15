@@ -1,11 +1,12 @@
 package org.hcms.appointment;
 
-import org.hcms.util.ConnectionProvider;
+import org.hcms.data.Repository;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class Appointment 
 {
@@ -20,25 +21,22 @@ public class Appointment
 	private String Appointment_Status="Pending";
 	private String payment_status;
 	Scanner sc=new Scanner(System.in);
-	/***********************************************************************************************/ 
-	private int AutoAppointmentID()/*This Method Returns AppointmentID */
-	{
-		int appID=0;
-		try{
-			Connection con= ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			ResultSet rs=st.executeQuery("Select MAX(AppointmentID) from Appointments");
-			rs.next();
-			appID = rs.getInt(1);
-			if(rs.wasNull())
-			{
-				return 1;
+
+	/*This Method Returns AppointmentID */
+	private int AutoAppointmentID() {
+		Function<ResultSet, Integer> mapper = (rs) -> {
+			try {
+				return rs.getInt(1);
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
 			}
-		}catch(Exception e)
-		{
-			System.out.println(e.getMessage());
+		};
+		List<Integer> appID = Repository.getInstance()
+				.executeQuery("Select MAX(AppointmentID) from Appointments", mapper);
+		if(appID.isEmpty()) {
+			return 1;
 		}
-		return appID+1;
+		return appID.get(0) + 1;
 	}
 	/***********************************************************************************************/ 
 	/**/
@@ -71,10 +69,9 @@ public class Appointment
 			ConfirmAppointment();
 		}	
 	}
-	/***********************************************************************************************/ 
+	/***********************************************************************************************/
 
-	private int ChooseDoctor()
-	{
+	private int ChooseDoctor() {
 		System.out.println("*** Choose Doctor Type According to your problem!! ***");
 		System.out.print("\t**********************************************************************************************\n");
         System.out.print("\t*                                                                                            *\n");
@@ -88,240 +85,111 @@ public class Appointment
         System.out.print("\t*                                                                                            *\n");
         System.out.print("\t**********************************************************************************************\n");	
 		int ch=sc.nextInt();
-		switch(ch)
-		{
-			case 1:
-			{
+		switch(ch) {
+			case 1: {
 				Doctor_Type="Eye";
-				try
-				{
-					Connection con=ConnectionProvider.getCon();
-					Statement st=con.createStatement();
-					ResultSet rs=st.executeQuery("select * from Doctors where Doctor_Type='Eye'");
-					while(rs.next())
-					{
-						System.out.print("\t* Doctor_ID :     "+rs.getInt(1)+"                         \n");
-						System.out.print("\t* Name :          "+rs.getString(2)+" "+rs.getString(3)+"  \n");
-						System.out.print("\t* Entry_Charge :  "+rs.getInt(7)+"                         \n");
-						System.out.print("\t* Email_ID :      "+rs.getString(10)+"                     \n");
-						System.out.print("\t* Qualification : "+rs.getString(8)+"                      \n");
-						System.out.print("\t************************************************************\n");	
-					}
-					System.out.println("\t*** Enter the doctor-id which you want to choose ***");
-					int choosedID = sc.nextInt();
-					return choosedID;
-				}catch(Exception e) {
-					System.out.println(e.getMessage());
-				}
+				return choseDoctorByType(Doctor_Type);
 			}
-			case 2:
-			{
+			case 2:  {
 				Doctor_Type="Ear";
-				try
-				{
-					Connection con=ConnectionProvider.getCon();
-					Statement st=con.createStatement();
-					ResultSet rs=st.executeQuery("select * from Doctors where Doctor_Type='Ear'");
-					while(rs.next())
-					{
-						System.out.print("\t* Doctor_ID :     "+rs.getInt(1)+"                         \n");
-						System.out.print("\t* Name :          "+rs.getString(2)+" "+rs.getString(3)+"  \n");
-						System.out.print("\t* Entry_Charge :  "+rs.getInt(7)+"                         \n");
-						System.out.print("\t* Email_ID :      "+rs.getString(10)+"                     \n");
-						System.out.print("\t* Qualification : "+rs.getString(8)+"                      \n");
-						System.out.print("\t************************************************************\n");	
-					}
-					System.out.println("\tEnter the doctor-id which you want to choose");
-					int choosedID = sc.nextInt();
-					return choosedID;
-				}catch(Exception e) {
-					System.out.println(e.getMessage());
-				}
+				return choseDoctorByType(Doctor_Type);
 			}
-			case 3:
-			{
+			case 3: {
 				Doctor_Type="Heart";
-				try
-				{
-					Connection con=ConnectionProvider.getCon();
-					Statement st=con.createStatement();
-					ResultSet rs=st.executeQuery("select * from Doctors where Doctor_Type='Heart'");
-					while(rs.next())
-					{
-						System.out.print("\t* Doctor_ID :     "+rs.getInt(1)+"                         \n");
-						System.out.print("\t* Name :          "+rs.getString(2)+" "+rs.getString(3)+"  \n");
-						System.out.print("\t* Entry_Charge :  "+rs.getInt(7)+"                         \n");
-						System.out.print("\t* Email_ID :      "+rs.getString(10)+"                     \n");
-						System.out.print("\t* Qualification : "+rs.getString(8)+"                      \n");
-						System.out.print("\t************************************************************\n");	
-					}
-					System.out.println("\tEnter the doctor-id which you want to choose ");
-					int choosedID = sc.nextInt();
-					return choosedID;
-				}catch(Exception e) {
-					System.out.println(e.getMessage());
-				}
+				return choseDoctorByType(Doctor_Type);
 			}
-			case 4:
-			{
+			case 4: {
 				Doctor_Type="Bone";
-				try
-				{
-					Connection con=ConnectionProvider.getCon();
-					Statement st=con.createStatement();
-					ResultSet rs=st.executeQuery("select * from Doctors where Doctor_Type='Bone'");
-					while(rs.next())
-					{
-						System.out.print("\t* Doctor_ID :     "+rs.getInt(1)+"                         \n");
-						System.out.print("\t* Name :          "+rs.getString(2)+" "+rs.getString(3)+"  \n");
-						System.out.print("\t* Entry_Charge :  "+rs.getInt(7)+"                         \n");
-						System.out.print("\t* Email_ID :      "+rs.getString(10)+"                     \n");
-						System.out.print("\t* Qualification : "+rs.getString(8)+"                      \n");
-						System.out.print("\t************************************************************\n");	
-					}
-					System.out.println("\tEnter the doctor-id which you want to choose");
-					int choosedID = sc.nextInt();
-					return choosedID;
-				}catch(Exception e) {
-					System.out.println(e.getMessage());
-				}
+				return choseDoctorByType(Doctor_Type);
 			}
-			case 5:
-			{
+			case 5: {
 				Doctor_Type="Lungs";
-				try
-				{
-					Connection con=ConnectionProvider.getCon();
-					Statement st=con.createStatement();
-					ResultSet rs=st.executeQuery("select * from Doctors where Doctor_Type='Lungs'");
-					while(rs.next())
-					{
-						System.out.print("\t* Doctor_ID :     "+rs.getInt(1)+"                         \n");
-						System.out.print("\t* Name :          "+rs.getString(2)+" "+rs.getString(3)+"  \n");
-						System.out.print("\t* Entry_Charge :  "+rs.getInt(7)+"                         \n");
-						System.out.print("\t* Email_ID :      "+rs.getString(10)+"                     \n");
-						System.out.print("\t* Qualification : "+rs.getString(8)+"                      \n");
-						System.out.print("\t************************************************************\n");	
-					}
-					System.out.println("\t Enter the doctor-id which you want to choose ");
-					int choosedID = sc.nextInt();
-					return choosedID;
-				}catch(Exception e) {
-					System.out.println(e.getMessage());
-				}
+				return choseDoctorByType(Doctor_Type);
 			}
-			case 6:
-			{
+			case 6: {
 				Doctor_Type="Kidney";
-				try
-				{
-					Connection con=ConnectionProvider.getCon();
-					Statement st=con.createStatement();
-					ResultSet rs=st.executeQuery("select * from Doctors where Doctor_Type='Kidney'");
-					while(rs.next())
-					{
-						System.out.print("\t* Doctor_ID :     "+rs.getInt(1)+"                         \n");
-						System.out.print("\t* Name :          "+rs.getString(2)+" "+rs.getString(3)+"  \n");
-						System.out.print("\t* Entry_Charge :  "+rs.getInt(7)+"                         \n");
-						System.out.print("\t* Email_ID :      "+rs.getString(10)+"                     \n");
-						System.out.print("\t* Qualification : "+rs.getString(8)+"                      \n");
-						System.out.print("\t************************************************************\n");	
-					}
-				}catch(Exception e) {
-						System.out.println(e.getMessage());
-					}
-					System.out.println("\tEnter the doctor-id which you want to choose ");
-					int choosedID = sc.nextInt();
-					return choosedID;
+				return choseDoctorByType(Doctor_Type);
 			}
-			case 7:
-			{
+			case 7:  {
 				Doctor_Type="General Physicist";
-				try
-				{
-					Connection con=ConnectionProvider.getCon();
-					Statement st=con.createStatement();
-					ResultSet rs=st.executeQuery("select * from Doctors where Doctor_Type='General Physicist'");
-					while(rs.next())
-					{
-						System.out.print("\t* Doctor_ID :     "+rs.getInt(1)+"                         \n");
-						System.out.print("\t* Name :          "+rs.getString(2)+" "+rs.getString(3)+"  \n");
-						System.out.print("\t* Entry_Charge :  "+rs.getInt(7)+"                         \n");
-						System.out.print("\t* Email_ID :      "+rs.getString(10)+"                     \n");
-						System.out.print("\t* Qualification : "+rs.getString(8)+"                      \n");
-						System.out.print("\t************************************************************\n");	
-					}
-					System.out.println("\tEnter the doctor-id which you want to choose ");
-					int choosedID = sc.nextInt();
-					return choosedID;
-				}catch(Exception e) {
-					System.out.println(e.getMessage());
-				}
+				return choseDoctorByType(Doctor_Type);
 			}
-			default :
-		    {
-		    	
+			default: {
 		    	return 0;
 		    }
 		}
 	}
-	/***********************************************************************************************/ 
+
+	Function<ResultSet, String> doctorMapper = rs -> {
+		try {
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder
+					.append("\t* Doctor_ID :     "+rs.getInt(1)+"                         \n")
+					.append("\t* Name :          "+rs.getString(2)+" "+rs.getString(3)+"  \n")
+					.append("\t* Entry_Charge :  "+rs.getInt(7)+"                         \n")
+					.append("\t* Email_ID :      "+rs.getString(10)+"                     \n")
+					.append("\t* Qualification : "+rs.getString(8)+"                      \n")
+					.append("\t************************************************************\n");
+			return stringBuilder.toString();
+		} catch (Exception ex) {
+			throw new RuntimeException();
+		}
+	};
+
+	private int choseDoctorByType(String type) {
+		Repository.getInstance()
+				.executeQuery(String.format("select * from Doctors where Doctor_Type='%s'", type), doctorMapper)
+				.forEach(System.out::println);
+
+		System.out.println("\t*** Enter the doctor-id which you want to choose ***");
+		int choosedID = sc.nextInt();
+		return choosedID;
+	}
+
 	
-	private String GetDoctorName(int docID)/**/
-	{
-		String DoctorName = null;
-		try
-		{
-			Connection con=ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			ResultSet rs=st.executeQuery("select * from Doctors where DoctorID="+docID);
-			while(rs.next())
-			{
-				DoctorName = rs.getString(2);
+	private String GetDoctorName(int docID) {
+		Function<ResultSet, String> mapper = rs -> {
+			try {
+				return rs.getString(2);
+			} catch (Exception ex) {
+				throw new RuntimeException();
 			}
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return DoctorName;
+		};
+
+		return Repository.getInstance()
+				.executeQuery("select * from Doctors where DoctorID="+docID, mapper)
+				.get(0);
 	}
-	/***********************************************************************************************/ 
+
 	//return doctor Fees
-	private int GetDoctorFees(int docID)
-	{
-		int  DoctorFees = 0;
-		try
-		{
-			Connection con=ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			ResultSet rs=st.executeQuery("select * from Doctors where DoctorID="+docID);
-			while(rs.next())
-			{
-				DoctorFees = rs.getInt(7);
+	private int GetDoctorFees(int docID)  {
+		Function<ResultSet, Integer> mapper = rs -> {
+			try {
+				return rs.getInt(7);
+			} catch (Exception ex) {
+				throw new RuntimeException();
 			}
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return DoctorFees;	
+		};
+
+		return Repository.getInstance()
+				.executeQuery("select * from Doctors where DoctorID="+docID, mapper)
+				.get(0);
 	}
-	/***********************************************************************************************/ 
-	private String GetDoctorQualification(int docID)
-	{
-		String DoctorQualification = null;
-		try
-		{
-			Connection con=ConnectionProvider.getCon();
-			Statement st=con.createStatement();
-			ResultSet rs=st.executeQuery("select * from Doctors where DoctorID="+docID);
-			while(rs.next())
-			{
-				DoctorQualification = rs.getString(8);
+
+	private String GetDoctorQualification(int docID)  {
+		Function<ResultSet, String> mapper = rs -> {
+			try {
+				return rs.getString(8);
+			} catch (Exception ex) {
+				throw new RuntimeException();
 			}
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return DoctorQualification;
+		};
+
+		return Repository.getInstance()
+				.executeQuery("select * from Doctors where DoctorID="+docID, mapper)
+				.get(0);
 	}
-	/***********************************************************************************************/ 
+
 	public String billpayment(int fee)//Method for paying fees to the doctor//
     {
     	Payment p=new Payment();
@@ -330,24 +198,17 @@ public class Appointment
     	String status=p.CreditCardDetails(fee);
     	return status;
     }
-	/***********************************************************************************************/ 
-	public void ConfirmAppointment()//This Method Add all details into appointment table of EHMS Database
-	{
-			
-			payment_status=billpayment(docFees);
-			try
-			
-			{
-				Connection con=ConnectionProvider.getCon();
-				Statement st=con.createStatement();
-				st.executeUpdate("INSERT INTO Appointments VALUES ('"+Apid+"','"+Problem+"','"+pid+"','"+Doctor_Name+"','"+Doctor_id+"','"+Doctor_Type+"','"+Doctor_Qualification+"','"+docFees+"','"+payment_status+"','"+Appointment_Status+"')");
-				System.out.println("ThankYou For visiting us your Appointment Has Been confirmed!!!");
-			}
-			catch(Exception e)
-			{
-				System.out.println("EXCEPTION OCCURS"+e.getMessage());
-			}
 
+	// This Method Add all details into appointment table of EHMS Database
+	public void ConfirmAppointment(){
+		payment_status=billpayment(docFees);
+		boolean done = Repository.getInstance()
+				.executeUpdate("INSERT INTO Appointments VALUES ('"+Apid+"','"+Problem+"','"+pid+"','"+Doctor_Name+"','"+Doctor_id+"','"+Doctor_Type+"','"+Doctor_Qualification+"','"+docFees+"','"+payment_status+"','"+Appointment_Status+"')");
+
+		if(done) {
+			System.out.println("ThankYou For visiting us your Appointment Has Been confirmed!!!");
+		} else {
+			System.out.println("EXCEPTION OCCURS");
+		}
 	}
-	/***********************************************************************************************/ 
 }
