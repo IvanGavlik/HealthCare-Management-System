@@ -1,8 +1,5 @@
 package org.hcms;
-import org.hcms.admin.Admin;
-import org.hcms.admin.AdminService;
-import org.hcms.admin.AdminServiceImpl;
-import org.hcms.admin.AdminTerminalView;
+import org.hcms.admin.*;
 import org.hcms.data.Repository;
 import org.hcms.doctor.Doctor;
 import org.hcms.patient.Patients;
@@ -16,13 +13,12 @@ public class Main {
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 
-		AdminTerminalView adminView = new AdminTerminalView();
-		AdminService adminService = new AdminServiceImpl(Repository.getInstance());
+		Scanner sc=new Scanner(System.in);
+		AdminPortal adminPortal = new AdminPortal(sc);
 
 		System.out.println("\n\t******************************E-HealthCare-Management-Sytem***********************************\n");
 		boolean check = false;
-		Scanner sc=new Scanner(System.in);
-		Admin a=new Admin();
+
 		Patients p=null;
 		Doctor d=null;
 		while(true)
@@ -41,95 +37,8 @@ public class Main {
 		switch (choice)
 		{
 		    case 1:  // Admins portal
-		    {  
-		    	boolean checkadmin = false;
-		    	System.out.println("*****************Welcome to Admins portal***********************");
-		    	String un;
-		    	String pd;
-		    	System.out.print("USERNAME-->");un=sc.next();
-		    	System.out.print("Password-->");pd=sc.next();
-		    	if((un.compareTo("abc")==0&&pd.compareTo("1234")==0)||(un.compareTo("xyz")==0&&pd.compareTo("1234")==0))
-		    	{
-		    		while(true)
-		    		{
-		    	        System.out.print("\t**********************************************************************************************\n");
-		    	        System.out.print("\t*                                                                                            *\n");
-		    	        System.out.print("\t*                  1.DoctorsList                                                             *\n");
-		    	        System.out.print("\t*                  2.PatientsList.                                                           *\n");
-		    	        System.out.print("\t*                  3.AddDoctor                                                               *\n");
-		    	        System.out.print("\t*                  4.RemoveDoctor                                                            *\n");
-		    	        System.out.print("\t*                  5.AppointmentsDetail                                                      *\n");
-		    	        System.out.print("\t*                  6.ViewFeedbacks                                                           *\n");
-		    	        System.out.print("\t*                  7.ViewReports                                                             *\n");
-		    	        System.out.print("\t*                  8.LOGOUT                                                                  *\n");
-		    	        System.out.print("\t**********************************************************************************************\n");	
-		    			int ch=sc.nextInt();
-		    			switch(ch)
-		    			{
-		    				case 1:
-		    				{
-		    					/*To view all doctor detail*/
-								adminView.viewDoctors(adminService.getDoctors());
-		    					break;
-		    				}
-		    				case 2:
-		    				{
-		    					/*To view all Patient Detail*/
-		    					a.viewPatients();
-		    					break;
-		    				}
-		    				case 3:
-		    				{
-		    					/*To add new doctor*/
-		    					int Id=a.addDoctor();
-		    					d=new Doctor();
-		    					d.DoctorRegistration(Id);
-		    					break;
-		    				}
-		    				case 4:
-		    				{
-		    					/*To Remove Doctor*/
-		    					System.out.println("Enter doctorID!!");
-		    					int id=sc.nextInt();
-		    					a.RemoveDoctor(id);
-		    					break;
-		    				}
-		    				case 5:
-		    				{
-	    					  //Appointments
-		    					a.ViewAppointment();
-		    					break;
-		    				}
-		    				case 6:
-		    				{
-		    					//TO VIEW FEEDBACK GIVEN BY THE PATIENT//
-		    					a.ViewFeedback();
-		    					break;
-		    				}
-		    				case 7:
-		    				{
-		    					//TO VIEW FEEDBACK GIVEN BY THE PATIENT//
-		    					a.ViewReports();
-		    					break;
-		    				}
-		    				case 8:
-		    				{
-		    					checkadmin = true;
-		    					break;
-		    					
-		    				}
-		    				default:
-		    				{
-		    					System.out.println("Please Choose An Appropriate Option!!!");
-		    				}
-		    			}//end of switch
-		    			if(checkadmin)
-		    				break;
-		    		}//end of while
-		    		
-		    	}
-		    	else
-		    		System.out.println("Invalid Username or Password");
+		    {
+				adminPortal.display();
 		    	break;
 		    }
 		    /***********************************************************************************************/ 
@@ -326,14 +235,12 @@ public class Main {
 		    	p.PatientRegistration(pid);//Patient Registration Form//
 		    	break;
 		    }
-		    case 5:
-		    {
+		    case 5: {
 		    	System.out.println("**THANKS FOR VISITING US - Have A Nice Day**");
 		    	check = true;
 		    	break;
 		    }
-		    default :
-		    {
+		    default: {
 		    	System.out.println("** PLEASE CHOOSE AN APPROPRIATE OPTION **");
 		    }
 		}//end of switch

@@ -8,9 +8,8 @@ import java.sql.*;
 import java.util.*;
 import java.util.function.Function;
 
+@Deprecated
 public class Admin extends Person {
-
-	private AdminService adminService = new AdminServiceImpl(Repository.getInstance());
 
 	Scanner sc =new Scanner(System.in);
 	private int AutoDoctorID()  {
@@ -54,20 +53,6 @@ public class Admin extends Person {
 		return DoctorID;
 	}
 
-	/**
-		Admin can view all the Doctor detail
-	*/
-	public void viewDoctors() {
-	//	adminService.getDoctors();
-		try  {
-			DBTablePrinter.printTable(Repository.getInstance().getConnection(), "Doctors");
-			Repository.getInstance().getConnection().close();
-		}
-		catch(Exception e)  {
-			System.out.println("EXCEPTION OCCURS");
-		}
-
-	}
 	/**
 	 * Admin can view all the patients detail
 	 * */
