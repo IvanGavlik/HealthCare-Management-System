@@ -8,8 +8,9 @@ import java.sql.*;
 import java.util.*;
 import java.util.function.Function;
 
-public class Admin extends Person
-{
+public class Admin extends Person {
+
+	private AdminService adminService = new AdminServiceImpl(Repository.getInstance());
 
 	Scanner sc =new Scanner(System.in);
 	private int AutoDoctorID()  {
@@ -57,6 +58,7 @@ public class Admin extends Person
 		Admin can view all the Doctor detail
 	*/
 	public void viewDoctors() {
+	//	adminService.getDoctors();
 		try  {
 			DBTablePrinter.printTable(Repository.getInstance().getConnection(), "Doctors");
 			Repository.getInstance().getConnection().close();

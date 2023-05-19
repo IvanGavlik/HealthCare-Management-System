@@ -26,10 +26,12 @@ public final class Repository {
 
     @Deprecated
     public Connection getConnection() {
+        this.checkConnection();
         return connection;
     }
 
     public boolean executeUpdate(String sql) {
+        this.checkConnection();
         try {
             Statement st= this.connection.createStatement();
             st.executeUpdate(sql);
@@ -48,11 +50,11 @@ public final class Repository {
     }
     // TODO CHECK QUERY RETURN TYPES IN ALL PLACES WHERE IS USED
     public <RESULT_ITEM> List<RESULT_ITEM> executeQuery(String query, Function<ResultSet, RESULT_ITEM> function) {
+        this.checkConnection();
         List result = new ArrayList();
         try {
             Statement st= this.connection.createStatement();
             ResultSet resultSet = st.executeQuery(query);
-            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             while (resultSet.next()) {
                 result.add(function.apply(resultSet));
             }
@@ -66,6 +68,16 @@ public final class Repository {
             }
         }
         return result;
+    }
+
+    private void checkConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                this.connection = ConnectionProviderDefault.getCon();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

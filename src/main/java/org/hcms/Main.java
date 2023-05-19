@@ -1,5 +1,8 @@
 package org.hcms;
 import org.hcms.admin.Admin;
+import org.hcms.admin.AdminService;
+import org.hcms.admin.AdminServiceImpl;
+import org.hcms.admin.AdminTerminalView;
 import org.hcms.data.Repository;
 import org.hcms.doctor.Doctor;
 import org.hcms.patient.Patients;
@@ -9,11 +12,13 @@ import java.util.Scanner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Main 
-{
+public class Main {
 	@SuppressWarnings("resource")
-	public static void main(String[] args) 
-	{
+	public static void main(String[] args) {
+
+		AdminTerminalView adminView = new AdminTerminalView();
+		AdminService adminService = new AdminServiceImpl(Repository.getInstance());
+
 		System.out.println("\n\t******************************E-HealthCare-Management-Sytem***********************************\n");
 		boolean check = false;
 		Scanner sc=new Scanner(System.in);
@@ -64,7 +69,7 @@ public class Main
 		    				case 1:
 		    				{
 		    					/*To view all doctor detail*/
-		    					a.viewDoctors();
+								adminView.viewDoctors(adminService.getDoctors());
 		    					break;
 		    				}
 		    				case 2:
