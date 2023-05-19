@@ -5,9 +5,8 @@ public class ConnectionProviderDefault {
 	{
 		try {
 			String url="jdbc:mysql://localhost:3306/HealthcareMangaementSystem";
-			
-			String uname="root";
-			String pass="182736sid";
+			String uname="test-user";
+			String pass="password";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con=DriverManager.getConnection(url,uname,pass);
 			return con;
@@ -15,5 +14,4 @@ public class ConnectionProviderDefault {
 			return null;
 		}
 	}
-
 }
