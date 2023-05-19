@@ -1,14 +1,19 @@
 package org.hcms.admin;
 
 import org.hcms.data.Repository;
-import org.hcms.doctor.Doctor;
+import org.hcms.doctor.DoctorManager;
+import org.hcms.doctor.DoctorService;
+import org.hcms.doctor.DoctorServiceImpl;
+import org.hcms.patient.PatientService;
+import org.hcms.patient.PatientServiceImpl;
 
 import java.util.Scanner;
 
 public class AdminPortal {
 
     AdminTerminalView adminView = new AdminTerminalView();
-    AdminService adminService = new AdminServiceImpl(Repository.getInstance());
+    DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
+    PatientService patientService = new PatientServiceImpl(Repository.getInstance());
 
     Admin a = new Admin();
     private Scanner sc;
@@ -18,7 +23,7 @@ public class AdminPortal {
     }
 
     public void display() {
-        Doctor d=null;
+        DoctorManager d=null;
         boolean checkadmin = false;
         System.out.println("\n\t*****************Welcome to Admins portal*****************************************************\n");
         String un;
@@ -36,19 +41,17 @@ public class AdminPortal {
             int ch=sc.nextInt();
             switch(ch) {
                 case 1: {
-                        /*To view all doctor detail*/
-                    adminView.viewDoctors(adminService.getDoctors());
+                    adminView.viewDoctors(doctorService.getDoctors());
                     break;
                 }
                 case 2: {
-                    /*To view all Patient Detail*/
-                    a.viewPatients();
+                    adminView.viewPatient(patientService.getPatients());
                     break;
                 }
                 case 3: {
                     /*To add new doctor*/
                     int Id=a.addDoctor();
-                    d=new Doctor();
+                    d=new DoctorManager();
                     d.DoctorRegistration(Id);
                     break;
                 }

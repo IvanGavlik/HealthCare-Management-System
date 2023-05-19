@@ -1,7 +1,7 @@
 package org.hcms;
 import org.hcms.admin.*;
 import org.hcms.data.Repository;
-import org.hcms.doctor.Doctor;
+import org.hcms.doctor.DoctorManager;
 import org.hcms.patient.Patients;
 
 import java.sql.*;
@@ -20,7 +20,7 @@ public class Main {
 		boolean check = false;
 
 		Patients p=null;
-		Doctor d=null;
+		DoctorManager d=null;
 		while(true)
 		{
 	        System.out.print("\t**********************************************************************************************\n");
@@ -190,19 +190,19 @@ public class Main {
 		    			{
 		    				case 1:
 		    				{
-		    					d=new Doctor();
+		    					d=new DoctorManager();
 		    					d.showDoctorDetails(id);
 		    					break;
 		    				}
 		    				case 2:
 		    				{
-		    					d=new Doctor();
+		    					d=new DoctorManager();
 		    					d.viewAppointment(id);
 		    					break;
 		    				}
 		    				case 3:
 		    				{
-		    					d=new Doctor();
+		    					d=new DoctorManager();
 		    					d.diagonistPatient(id);
 		    					break;
 		    				}

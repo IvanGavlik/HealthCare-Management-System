@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
-public class Doctor extends Person
+@Deprecated
+public class DoctorManager extends Person
 {
 	int docid;//DoctorID
 	String Doctor_Type;//Type of doctor

@@ -1,4 +1,4 @@
-package org.hcms.admin;
+package org.hcms.doctor;
 
 import org.hcms.data.Doctor;
 import org.hcms.data.Repository;
@@ -7,18 +7,17 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.function.Function;
 
-public class AdminServiceImpl implements AdminService {
-
+public class DoctorServiceImpl implements DoctorService {
     private Repository repository;
 
-    public AdminServiceImpl(Repository repository) {
+    public DoctorServiceImpl(Repository repository) {
         this.repository = repository;
     }
     @Override
     public List<Doctor> getDoctors() {
-        Function<ResultSet, Doctor> dbRowToDoctor = rs -> {
+        Function<ResultSet, org.hcms.data.Doctor> dbRowToDoctor = rs -> {
             try {
-                Doctor d = new Doctor();
+                org.hcms.data.Doctor d = new Doctor();
                 d.setId(rs.getInt("DoctorID"));
                 d.setFirstName(rs.getString("First_Name"));
                 d.setLastName(rs.getString("Last_Name"));
@@ -37,5 +36,3 @@ public class AdminServiceImpl implements AdminService {
         return repository.executeQuery("SELECT * FROM Doctors", dbRowToDoctor); // TODO LIMIT " + maxRows;
     }
 }
-
-
