@@ -49,10 +49,7 @@ public class AdminPortal {
                     break;
                 }
                 case 3: {
-                    /*To add new doctor*/
-                    int Id=a.addDoctor();
-                    d=new DoctorManager();
-                    d.DoctorRegistration(Id);
+                    doctorService.addDoctor(adminView.addDoctor());
                     break;
                 }
                 case 4: {

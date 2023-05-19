@@ -3,7 +3,6 @@ package org.hcms.data;
 import java.util.Objects;
 
 public class Doctor {
-
     private int id;
     private String firstName;
     private String lastName;
@@ -14,6 +13,7 @@ public class Doctor {
     private double entryCharge;
     private String qualification;
     private String doctorType;
+    private String password;
 
     public int getId() {
         return id;
@@ -95,17 +95,25 @@ public class Doctor {
         this.doctorType = doctorType;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Doctor doctor = (Doctor) o;
-        return id == doctor.id && age == doctor.age && Double.compare(doctor.entryCharge, entryCharge) == 0 && Objects.equals(firstName, doctor.firstName) && Objects.equals(lastName, doctor.lastName) && Objects.equals(email, doctor.email) && Objects.equals(gender, doctor.gender) && Objects.equals(contactNumber, doctor.contactNumber) && Objects.equals(qualification, doctor.qualification) && Objects.equals(doctorType, doctor.doctorType);
+        return id == doctor.id && age == doctor.age && Double.compare(doctor.entryCharge, entryCharge) == 0 && Objects.equals(firstName, doctor.firstName) && Objects.equals(lastName, doctor.lastName) && Objects.equals(email, doctor.email) && Objects.equals(gender, doctor.gender) && Objects.equals(contactNumber, doctor.contactNumber) && Objects.equals(qualification, doctor.qualification) && Objects.equals(doctorType, doctor.doctorType) && Objects.equals(password, doctor.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, gender, contactNumber, age, entryCharge, qualification, doctorType);
+        return Objects.hash(id, firstName, lastName, email, gender, contactNumber, age, entryCharge, qualification, doctorType, password);
     }
 
     @Override
@@ -121,6 +129,7 @@ public class Doctor {
                 ", entryCharge=" + entryCharge +
                 ", qualification='" + qualification + '\'' +
                 ", doctorType='" + doctorType + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

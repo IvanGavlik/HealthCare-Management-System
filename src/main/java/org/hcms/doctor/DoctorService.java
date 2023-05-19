@@ -7,4 +7,6 @@ import java.util.List;
 public interface DoctorService {
 
     List<Doctor> getDoctors();
+
+    void addDoctor(Doctor doctor);
 }

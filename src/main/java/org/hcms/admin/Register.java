@@ -15,13 +15,4 @@ public class Register {
 		}
 	}
 
-	public void doctorRegistration(int docid,String fn,String ln,String G,String cn,int age,int ec,String Q,String dt,String ed)  {
-		boolean done = Repository.getInstance()
-				.executeUpdate("INSERT INTO Doctors VALUES ('"+docid+"','"+fn+"','"+ln+"','"+G+"','"+cn+"','"+age+"','"+ec+"','"+Q+"','"+dt+"','"+ed+"')");
-		if (done) {
-			System.out.println("Doctor Added Successully");
-		} else {
-			System.out.println("Doctor not added!!");
-		}
-	}
 }

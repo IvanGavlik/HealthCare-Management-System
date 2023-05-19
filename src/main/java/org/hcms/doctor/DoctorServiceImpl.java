@@ -4,6 +4,7 @@ import org.hcms.data.Doctor;
 import org.hcms.data.Repository;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Function;
 
@@ -17,7 +18,7 @@ public class DoctorServiceImpl implements DoctorService {
     public List<Doctor> getDoctors() {
         Function<ResultSet, org.hcms.data.Doctor> dbRowToDoctor = rs -> {
             try {
-                org.hcms.data.Doctor d = new Doctor();
+                Doctor d = new Doctor();
                 d.setId(rs.getInt("DoctorID"));
                 d.setFirstName(rs.getString("First_Name"));
                 d.setLastName(rs.getString("Last_Name"));
@@ -34,5 +35,43 @@ public class DoctorServiceImpl implements DoctorService {
             }
         };
         return repository.executeQuery("SELECT * FROM Doctors", dbRowToDoctor); // TODO LIMIT " + maxRows;
+    }
+
+    @Override
+    public void addDoctor(Doctor doctor) {
+        int docid = autoDoctorID();
+
+        boolean done = Repository.getInstance()
+                .executeUpdate("insert into Users values('"+docid+"','"+"Doctor"+"','"+ doctor.getPassword()+"')");
+
+        if(!done) {
+            System.out.println("Doctor not added!!");
+            return;
+        }
+
+        done = Repository.getInstance()
+                .executeUpdate("INSERT INTO Doctors VALUES ('"+docid+"','"+doctor.getFirstName()+"','"+doctor.getLastName()+"','"+doctor.getGender()+"','"+doctor.getContactNumber()+"','"+doctor.getAge()+"','"+doctor.getEntryCharge()+"','"+doctor.getQualification()+"','"+doctor.getDoctorType()+"','"+doctor.getEmail()+"')");
+        if (done) {
+            System.out.println("Doctor Added Successully");
+        } else {
+            System.out.println("Doctor not added!!");
+        }
+
+    }
+    private int autoDoctorID()  {
+        final String query = "Select MAX(UserID) as NextUserID from Users where userType='Doctor'";
+        final Function<ResultSet, Integer> mapper = (r) -> {
+            try {
+                return r.getInt(1);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        final List<Integer> i = Repository.getInstance()
+                .executeQuery(query, mapper);
+        if(i.isEmpty()) {
+            return 1;
+        }
+        return i.get(0) + 1;
     }
 }
