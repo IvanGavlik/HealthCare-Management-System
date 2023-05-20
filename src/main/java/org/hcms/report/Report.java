@@ -1,10 +1,12 @@
 package org.hcms.report;
 
 import org.hcms.data.Repository;
-import org.hcms.util.DBTablePrinter;
+import org.hcms.doctor.DoctorReportOnAppointmentImpl;
+import org.hcms.util.TerminalTablePrinter;
 
 
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
@@ -56,13 +58,26 @@ public class Report
 		if(x==1)
 		{
 			GenerateReport();
-			ShowReport();
+			showRerort(); /** TODO DUPLICATE @see {@link org.hcms.admin.AdminTerminalView#viewReports(List)}  */
 		}
 		else
 		{
 			System.out.println("** Enter Appropriate Details Please **");	
 		}
 	}
+
+	private static void showRerort() {
+		List<String> header = Arrays.asList("Report ID", "Appointment ID", "Patient ID", "Doctor ID", "Prescribed", "Doctor Comment");
+
+		Function<org.hcms.data.Report, List<String>> mapper = (el) ->
+				Arrays.asList(String.valueOf(el.getId()), String.valueOf(el.getAppointmentID()), String.valueOf(el.getPatientID()),
+						String.valueOf(el.getDoctorID()), el.getMedicinePrescribed(), el.getDoctorComment());
+
+		TerminalTablePrinter.printTable(header, 
+				new DoctorReportOnAppointmentImpl(Repository.getInstance()).getReport(),
+				mapper);
+	}
+
 	/***********************************************************************************************/ 
 	public void GenerateReport() {
 		boolean done = Repository.getInstance()
@@ -76,15 +91,6 @@ public class Report
 	//changes the status of appointment from pending to completed
 	/***********************************************************************************************/
 
-	/*Shows all reports that are being generated*/
-	public void ShowReport() {
-		try  {
-			DBTablePrinter.printTable(Repository.getInstance().getConnection(), "Reports");
-		}
-		catch(Exception e) {
-			System.out.println("EXCEPTION OCCURS"+e.getMessage());
-		}
-	}
 	private void ChangeStatus() {
 		boolean done = Repository.getInstance()
 				.executeUpdate("UPDATE Appointments SET Appointment_Status='Completed' WHERE AppointmentID="+appid);

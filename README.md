@@ -20,3 +20,5 @@ after you exit app do not forget to shout down DB docker image
 * patient feedback vs patient service SRP -> also modularizazion
 * connect feedback with Appointment (feedbcak for only done appontments)
 * create diagrams
+* standardize output create and use one class
+* where i need singletons, and where more object (should go with the factor ? )

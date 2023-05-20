@@ -1,9 +1,6 @@
 package org.hcms.admin;
 
-import org.hcms.data.Appointment;
-import org.hcms.data.Doctor;
-import org.hcms.data.Feedback;
-import org.hcms.data.Patient;
+import org.hcms.data.*;
 import org.hcms.person.Person;
 import org.hcms.util.TerminalTablePrinter;
 
@@ -12,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
-public class AdminTerminalView {
+class AdminTerminalView {
 
     public void viewDoctors(List<Doctor> doctors) {
 
@@ -50,7 +47,7 @@ public class AdminTerminalView {
         {
             System.out.println("Confirm Password");
             cpd=sc.next();
-            if(password.compareTo(cpd)==0)
+            if(password.compareTo(cpd) == 0)
                 break;
         }
 
@@ -134,5 +131,15 @@ public class AdminTerminalView {
                         el.getLocation(), el.getPatientComment());
 
         TerminalTablePrinter.printTable(header, feedbacks, mapper);
+    }
+
+    public void viewReports(List<Report> reports) {
+        List<String> header = Arrays.asList("Report ID", "Appointment ID", "Patient ID", "Doctor ID", "Prescribed", "Doctor Comment");
+
+        Function<Report, List<String>> mapper = (el) ->
+                Arrays.asList(String.valueOf(el.getId()), String.valueOf(el.getAppointmentID()), String.valueOf(el.getPatientID()),
+                        String.valueOf(el.getDoctorID()), el.getMedicinePrescribed(), el.getDoctorComment());
+
+        TerminalTablePrinter.printTable(header, reports, mapper);
     }
 }

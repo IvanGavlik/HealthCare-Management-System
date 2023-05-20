@@ -13,16 +13,15 @@ public class Main {
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 
-		Scanner sc=new Scanner(System.in);
-		AdminPortal adminPortal = new AdminPortal(sc);
+		Scanner sc = new Scanner(System.in);
+		AdminPortal adminPortal = new AdminPortal();
 
 		System.out.println("\n\t******************************E-HealthCare-Management-Sytem***********************************\n");
 		boolean check = false;
 
 		Patients p=null;
 		DoctorManager d=null;
-		while(true)
-		{
+		while(true) {
 	        System.out.print("\t**********************************************************************************************\n");
 	        System.out.print("\t*                                                                                            *\n");
 	        System.out.print("\t*                  1. ADMIN - LOGIN                                                          *\n");

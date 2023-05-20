@@ -3,9 +3,7 @@ package org.hcms.admin;
 import org.hcms.appointment.AppointmentService;
 import org.hcms.appointment.AppointmentServiceImpl;
 import org.hcms.data.Repository;
-import org.hcms.doctor.DoctorManager;
-import org.hcms.doctor.DoctorService;
-import org.hcms.doctor.DoctorServiceImpl;
+import org.hcms.doctor.*;
 import org.hcms.patient.PatientFeedback;
 import org.hcms.patient.PatientFeedbackImpl;
 import org.hcms.patient.PatientService;
@@ -13,39 +11,26 @@ import org.hcms.patient.PatientServiceImpl;
 
 import java.util.Scanner;
 
-public class AdminPortal {
-
-    AdminTerminalView adminView = new AdminTerminalView();
-    DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
-    PatientService patientService = new PatientServiceImpl(Repository.getInstance());
-    AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
-
-    PatientFeedback patientFeedback = new PatientFeedbackImpl(Repository.getInstance());
-
-    Admin a = new Admin();
-    private Scanner sc;
-
-    public AdminPortal(Scanner sc) {
-        this.sc = sc;
-    }
-
+public final class AdminPortal {
+    private AdminTerminalView adminView = new AdminTerminalView();
+    private DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
+    private PatientService patientService = new PatientServiceImpl(Repository.getInstance());
+    private AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
+    private PatientFeedback patientFeedback = new PatientFeedbackImpl(Repository.getInstance());
+    private DoctorReportOnAppointment doctorReportOnAppointment = new DoctorReportOnAppointmentImpl(Repository.getInstance());
     public void display() {
         DoctorManager d=null;
         boolean checkadmin = false;
         System.out.println("\n\t*****************Welcome to Admins portal*****************************************************\n");
-        String un;
-        String pd;
-        System.out.print("\tUSERNAME-->");un=sc.next();
-        System.out.print("\tPassword-->");pd=sc.next();
 
-        if (!"abc".equals(un)  || !"1234".equals(pd)) {
-            System.out.println("Invalid Username or Password");
+        Scanner sc = new Scanner(System.in);
+        if (!loginAdmin(sc)) {
             return;
         }
 
         while(true)  {
             menu();
-            int ch=sc.nextInt();
+            int ch = sc.nextInt();
             switch(ch) {
                 case 1: {
                     adminView.viewDoctors(doctorService.getDoctors());
@@ -85,8 +70,7 @@ public class AdminPortal {
                     break;
                 }
                 case 7: {
-                    //TO VIEW FEEDBACK GIVEN BY THE PATIENT//
-                    a.ViewReports();
+                    adminView.viewReports(doctorReportOnAppointment.getReport());
                     break;
                 }
                 case 8: {
@@ -101,7 +85,6 @@ public class AdminPortal {
                 break;
         }//end of while
     }
-
     private void menu() {
         System.out.print("\t**********************************************************************************************\n");
         System.out.print("\t*                                                                                            *\n");
@@ -114,5 +97,19 @@ public class AdminPortal {
         System.out.print("\t*                  7.ViewReports                                                             *\n");
         System.out.print("\t*                  8.LOGOUT                                                                  *\n");
         System.out.print("\t**********************************************************************************************\n");
+    }
+    private boolean loginAdmin(Scanner sc) {
+        String un;
+        String pd;
+        System.out.print("\tUSERNAME-->");
+        un=sc.next();
+        System.out.print("\tPassword-->");
+        pd=sc.next();
+
+        if (!"abc".equals(un)  || !"1234".equals(pd)) {
+            System.out.println("Invalid Username or Password");
+            return false;
+        }
+        return true;
     }
 }
