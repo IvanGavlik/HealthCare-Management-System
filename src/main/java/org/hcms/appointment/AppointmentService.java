@@ -5,6 +5,6 @@ import org.hcms.data.Appointment;
 import java.util.List;
 
 public interface AppointmentService {
-
     List<Appointment> getAppointments();
+    boolean saveAppointment(Appointment appointment);
 }

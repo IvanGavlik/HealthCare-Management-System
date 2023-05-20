@@ -12,7 +12,6 @@ import java.util.function.Function;
 class AdminTerminalView {
 
     public void viewDoctors(List<Doctor> doctors) {
-
         List<String> header = Arrays.asList("Doctor ID", "First Name", "Last Name", "Contact Number", "Age", "Charge",
                 "Qualification", "Type", "Email");
 
@@ -35,7 +34,7 @@ class AdminTerminalView {
         TerminalTablePrinter.printTable(header, patients, mapper);
     }
 
-    public Doctor addDoctor() {
+    public Doctor createDoctor() {
         Scanner sc = new Scanner(System.in);
 
         String password;
@@ -132,7 +131,6 @@ class AdminTerminalView {
 
         TerminalTablePrinter.printTable(header, feedbacks, mapper);
     }
-
     public void viewReports(List<Report> reports) {
         List<String> header = Arrays.asList("Report ID", "Appointment ID", "Patient ID", "Doctor ID", "Prescribed", "Doctor Comment");
 

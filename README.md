@@ -22,3 +22,4 @@ after you exit app do not forget to shout down DB docker image
 * create diagrams
 * standardize output create and use one class
 * where i need singletons, and where more object (should go with the factor ? )
+* patientTerminalView.showDoctors save as adminTerminalView

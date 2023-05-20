@@ -4,18 +4,15 @@ import org.hcms.data.Appointment;
 import org.hcms.data.Repository;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Function;
 
 public class AppointmentServiceImpl implements AppointmentService {
-
     private Repository repository;
-
     public AppointmentServiceImpl(Repository repository) {
         this.repository = repository;
     }
-
-
     @Override
     public List<Appointment> getAppointments() {
 
@@ -40,5 +37,31 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return repository.executeQuery("SELECT * FROM Appointments", mapToAppointment);
     }
+
+    @Override
+    public boolean saveAppointment(Appointment a) {
+        int appointmentID = autoAppointmentID();
+        return Repository.getInstance()
+                .executeUpdate("INSERT INTO Appointments VALUES ('"+appointmentID+"','"+a.getProblem()+"','"
+                        +a.getPatientId()+"','"+a.getDoctorName()+"','"+a.getDoctorId()+"','"+a.getDoctorType()+"','"
+                        +a.getDoctorQualification()+"','"+a.getDoctorFees()+"','"+a.getPaymentStatus()+"','"+a.getAppointmentStatus()+"')");
+    }
+
+    private int autoAppointmentID() {
+        Function<ResultSet, Integer> mapper = (rs) -> {
+            try {
+                return rs.getInt(1);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        List<Integer> appID = Repository.getInstance()
+                .executeQuery("Select MAX(AppointmentID) from Appointments", mapper);
+        if(appID.isEmpty()) {
+            return 1;
+        }
+        return appID.get(0) + 1;
+    }
+
 }
 

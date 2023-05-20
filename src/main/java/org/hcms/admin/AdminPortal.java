@@ -41,7 +41,7 @@ public final class AdminPortal {
                     break;
                 }
                 case 3: {
-                    boolean done = doctorService.addDoctor(adminView.addDoctor());
+                    boolean done = doctorService.addDoctor(adminView.createDoctor());
                     if (done) {
                         System.out.println("Doctor added!!");
                     } else {

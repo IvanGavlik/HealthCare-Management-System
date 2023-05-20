@@ -1,7 +1,6 @@
  //***********************************PATIENT-CLASS***********************************//
 package org.hcms.patient;
 import org.hcms.admin.Register;
-import org.hcms.appointment.AppointmentManager;
 import org.hcms.data.Repository;
 import org.hcms.person.Person;
 import org.hcms.util.DBTablePrinter;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
+@Deprecated
  public class Patients extends Person {
 	Scanner sc=new Scanner(System.in);
     String BloodGroup ;
@@ -79,47 +79,6 @@ import java.util.function.Function;
  
     }
 	 /*This method all details of the patient*/
-	public void ShowPatientDetails(int id) {
-		Function<ResultSet, String> mapper = resultSet -> {
-			try {
-				StringBuilder stringBuilder = new StringBuilder();
-				stringBuilder
-						.append("PatientID:      "+resultSet.getInt(1))
-						.append("Name:           "+resultSet.getString(2)+" "+resultSet.getString(3))
-						.append("Blood-Group:    "+resultSet.getString(8))
-						.append("Address:        "+resultSet.getString(9))
-						.append("Contact-Number: "+resultSet.getString(5))
-						.append("\t********************\n");
-
-				return stringBuilder.toString();
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-
-		};
-
-		Repository.getInstance()
-				.executeQuery("Select * from Patients where PatientID="+id, mapper)
-				.forEach(System.out::println);
-
-	}  
-    /***********************************************************************************************/
-    
-    public void viewDoctor() {
-		DBTablePrinter.printTable(Repository.getInstance().getConnection(), "Doctors");
-		try {
-			Repository.getInstance().getConnection().close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
-    /***********************************************************************************************/  
-    public void BookAppointment(int id) 
-    {
-    	AppointmentManager ap=new AppointmentManager();
-    	ap.BookAppointment(id);  
-    	
-    }
 
     public void viewAppointment(int id) {
 

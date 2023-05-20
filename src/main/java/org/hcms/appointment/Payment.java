@@ -2,33 +2,68 @@
 package org.hcms.appointment;
 
 import java.util.*;
-/*********************************/ 
-public class Payment 
-{
-	Scanner input=new Scanner(System.in);
-	public String CreditCardDetails(int fee)//THIS METHOD TAKES THE CREDIT CARD DETILS OF THE PATIENT 
-	{
-		String Status;
-		System.out.println("\t\tCARD-HOLDER Name: ");
-		String cardHolderName=input.nextLine();
-		System.out.println("\t\tCARD-NUMBER : ");
-		String card_no=input.nextLine();
-		System.out.println("\t\tEXPIRY DATE : ");
-		String ExpiryDate=input.nextLine();
-		System.out.println("\t\tCVC number: ");
-		int cvc=input.nextInt();
-		System.out.println("Please Enter 1 to confirm Payment---");
-		int x=input.nextInt();
-		if(x==1)
-		{
-			System.out.println("Your Payment is confirmed");
-			return "Payed";
-		}
-		else
-		{
-			System.out.println("Your Appointment is cancelled");
-			return "NotPayed";
-		}
+
+public class Payment {
+
+	private String name;
+	private String number;
+	private String expiryDate;
+	private String cvcNumber;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public String getExpiryDate() {
+		return expiryDate;
+	}
+
+	public void setExpiryDate(String expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+
+	public String getCvcNumber() {
+		return cvcNumber;
+	}
+
+	public void setCvcNumber(String cvcNumber) {
+		this.cvcNumber = cvcNumber;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Payment payment = (Payment) o;
+		return Objects.equals(name, payment.name) && Objects.equals(number, payment.number) &&
+				Objects.equals(expiryDate, payment.expiryDate) && Objects.equals(cvcNumber, payment.cvcNumber);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, number, expiryDate, cvcNumber);
+	}
+
+	@Override
+	public String toString() {
+		return "Payment{" +
+				"name='" + name + '\'' +
+				", number='" + number + '\'' +
+				", expiryDate='" + expiryDate + '\'' +
+				", cvcNumber='" + cvcNumber + '\'' +
+				'}';
 	}
 }
-/*********************************/
+

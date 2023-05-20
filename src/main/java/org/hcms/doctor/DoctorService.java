@@ -11,4 +11,7 @@ public interface DoctorService {
     boolean addDoctor(Doctor doctor);
 
     boolean removeDoctor(int id);
+    List<Doctor> getDoctorsByType(String type);
+
+    Doctor getDoctor(int id);
 }
