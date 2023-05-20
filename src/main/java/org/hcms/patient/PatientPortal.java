@@ -5,6 +5,8 @@ import org.hcms.appointment.AppointmentServiceImpl;
 import org.hcms.appointment.PaymentService;
 import org.hcms.appointment.PaymentServiceImpl;
 import org.hcms.data.Repository;
+import org.hcms.doctor.DoctorReportOnAppointment;
+import org.hcms.doctor.DoctorReportOnAppointmentImpl;
 import org.hcms.doctor.DoctorService;
 import org.hcms.doctor.DoctorServiceImpl;
 
@@ -20,6 +22,7 @@ public class PatientPortal {
     private DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
     private AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
     private PaymentService paymentService = new PaymentServiceImpl();
+    private DoctorReportOnAppointment doctorReportOnAppointment = new DoctorReportOnAppointmentImpl(Repository.getInstance());
     public void display() {
         Patients p = new Patients();
         boolean checkPatient = false;
@@ -53,8 +56,7 @@ public class PatientPortal {
 
         if(flag==1) {
             p=new Patients();
-            while(true)
-            {
+            while(true)  {
                 System.out.print("\t**********************************************************************************************\n");
                 System.out.print("\t*                                                                                            *\n");
                 System.out.print("\t*                  1.ViewProfile                                                             *\n");
@@ -87,33 +89,27 @@ public class PatientPortal {
                         }
                         break;
                     }
-                    case 4: {
-                        p.ViewReport(id);
+                    case 4: {;
+                        patientTerminalView.viewReports(doctorReportOnAppointment.getReportByPatientId(id));
                         break;
                     }
-                    case 5:
-                    {
-                        p.viewAppointment(id);
+                    case 5: {
+                       patientTerminalView.viewAppointments(appointmentService.getAppointmentByPatientId(id));
                         break;
                     }
-                    case 6:
-                    {
+                    case 6: {
                         p.AppointmentHistory(id) ;
                         break;
                     }
-                    case 7:
-                    {
+                    case 7: {
                         p.Givefeedback(id) ;
                         break;
-
                     }
-                    case 8:
-                    {
+                    case 8: {
                         checkPatient = true;
                         break;
                     }
-                    default:
-                    {
+                    default: {
                         System.out.println("Please Choose An Appropriate Option!!!");
                     }
                 }

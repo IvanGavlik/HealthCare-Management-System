@@ -10,32 +10,31 @@ import java.util.function.Function;
 
 public class AppointmentServiceImpl implements AppointmentService {
     private Repository repository;
+
+    private Function<ResultSet, Appointment> mapDbRowToAppointment = (rs) -> {
+        try {
+            Appointment a = new Appointment();
+            a.setId(rs.getInt("AppointmentID"));
+            a.setProblem(rs.getString("Problem"));
+            a.setPatientId(rs.getInt("PatientId"));
+            a.setDoctorName(rs.getString("DoctorName"));
+            a.setDoctorId(rs.getInt("DoctorID"));
+            a.setDoctorType(rs.getString("DoctorType"));
+            a.setDoctorQualification(rs.getString("Qualification"));
+            a.setDoctorFees(rs.getDouble("DoctorFees"));
+            a.setPaymentStatus(rs.getString("PaymentStatus"));
+            a.setAppointmentStatus(rs.getString("Appointment_Status"));
+            return a;
+        } catch (Exception ex) {
+            throw new RuntimeException();
+        }
+    };
     public AppointmentServiceImpl(Repository repository) {
         this.repository = repository;
     }
     @Override
     public List<Appointment> getAppointments() {
-
-        Function<ResultSet, Appointment> mapToAppointment = (rs) -> {
-            try {
-                Appointment a = new Appointment();
-                a.setId(rs.getInt("AppointmentID"));
-                a.setProblem(rs.getString("Problem"));
-                a.setPatientId(rs.getInt("PatientId"));
-                a.setDoctorName(rs.getString("DoctorName"));
-                a.setDoctorId(rs.getInt("DoctorID"));
-                a.setDoctorType(rs.getString("DoctorType"));
-                a.setDoctorQualification(rs.getString("Qualification"));
-                a.setDoctorFees(rs.getDouble("DoctorFees"));
-                a.setPaymentStatus(rs.getString("PaymentStatus"));
-                a.setAppointmentStatus(rs.getString("Appointment_Status"));
-                return a;
-            } catch (Exception ex) {
-                throw new RuntimeException();
-            }
-        };
-
-        return repository.executeQuery("SELECT * FROM Appointments", mapToAppointment);
+        return repository.executeQuery("SELECT * FROM Appointments", mapDbRowToAppointment);
     }
 
     @Override
@@ -45,6 +44,12 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .executeUpdate("INSERT INTO Appointments VALUES ('"+appointmentID+"','"+a.getProblem()+"','"
                         +a.getPatientId()+"','"+a.getDoctorName()+"','"+a.getDoctorId()+"','"+a.getDoctorType()+"','"
                         +a.getDoctorQualification()+"','"+a.getDoctorFees()+"','"+a.getPaymentStatus()+"','"+a.getAppointmentStatus()+"')");
+    }
+
+    @Override
+    public List<Appointment> getAppointmentByPatientId(int patientId) {
+        return Repository.getInstance()
+                .executeQuery("Select * from  Appointments where PatientID="+patientId, mapDbRowToAppointment);
     }
 
     private int autoAppointmentID() {
@@ -62,6 +67,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return appID.get(0) + 1;
     }
+
+
 
 }
 

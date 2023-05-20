@@ -84,6 +84,7 @@ public class Report
 				.executeUpdate("INSERT INTO Reports VALUES ('"+RepId+"','"+appid+"','"+pid+"','"+docid+"','"+MedicinePrescribed+"','"+DoctorsComment+"')");
 		if (done) {
 			System.out.println("Report Generated Succesfully!!!");
+			ChangeStatus();
 		} else {
 			System.out.println("Report not generated!!!");
 		}
@@ -91,6 +92,7 @@ public class Report
 	//changes the status of appointment from pending to completed
 	/***********************************************************************************************/
 
+	// TODO
 	private void ChangeStatus() {
 		boolean done = Repository.getInstance()
 				.executeUpdate("UPDATE Appointments SET Appointment_Status='Completed' WHERE AppointmentID="+appid);

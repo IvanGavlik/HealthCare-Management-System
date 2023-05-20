@@ -3,10 +3,7 @@ package org.hcms.patient;
 import org.hcms.appointment.Payment;
 import org.hcms.appointment.PaymentService;
 import org.hcms.appointment.PaymentServiceImpl;
-import org.hcms.data.Appointment;
-import org.hcms.data.Doctor;
-import org.hcms.data.Patient;
-import org.hcms.data.Repository;
+import org.hcms.data.*;
 import org.hcms.doctor.DoctorService;
 import org.hcms.util.TerminalTablePrinter;
 
@@ -70,7 +67,7 @@ public class PatientTerminalView {
         a.setDoctorQualification(doctor.getQualification());
         a.setDoctorFees(doctor.getEntryCharge());
         a.setPaymentStatus(paymentStatus);
-        a.setAppointmentStatus("");
+        a.setAppointmentStatus("Pending");
 
         return a;
     }
@@ -155,6 +152,28 @@ public class PatientTerminalView {
             System.out.println("Your Appointment is cancelled");
             return "NotPayed";
         }
+    }
+
+    public void viewReports(List<Report> reports) {
+        List<String> header = Arrays.asList("Report ID", "Appointment ID", "Patient ID", "Doctor ID", "Prescribed", "Doctor Comment");
+
+        Function<Report, List<String>> mapper = (el) ->
+                Arrays.asList(String.valueOf(el.getId()), String.valueOf(el.getAppointmentID()), String.valueOf(el.getPatientID()),
+                        String.valueOf(el.getDoctorID()), el.getMedicinePrescribed(), el.getDoctorComment());
+
+        TerminalTablePrinter.printTable(header, reports, mapper);
+    }
+
+    public void viewAppointments(List<Appointment> appointments) {
+        List<String> header = Arrays.asList("Appointment ID", "Problem", "Patient ID", "Doctor ID", "Appointment Status",
+                "Fee", "Payment Status");
+
+        Function<Appointment, List<String>> mapper = (el) ->
+                Arrays.asList(String.valueOf(el.getId()), el.getProblem(), String.valueOf(el.getPatientId()),
+                        String.valueOf(el.getDoctorId()), el.getAppointmentStatus(), String.valueOf(el.getDoctorFees()),
+                        el.getPaymentStatus());
+
+        TerminalTablePrinter.printTable(header, appointments, mapper);
     }
 
 }

@@ -80,37 +80,6 @@ import java.util.function.Function;
     }
 	 /*This method all details of the patient*/
 
-    public void viewAppointment(int id) {
-
-		Function <ResultSet, String> mapper = resultSet -> {
-			try {
-				StringBuilder stringBuilder = new StringBuilder();
-				stringBuilder
-						.append("\t*** APPOINTMENT:")
-						.append("\t* Appointment_ID : "+resultSet.getInt(1)+"                          \n")
-						.append("\t* Problem  :       "+resultSet.getString(2)+"                       \n")
-						.append("\t* PatientId :      "+resultSet.getInt(3)+"                          \n")
-						.append("\t* Doctor_Id :      "+resultSet.getInt(5)+"                          \n")
-						.append("\t* DoctorFees :     "+resultSet.getString(8)+"                       \n")
-						.append("\t* PaymentStatus :  "+resultSet.getString(9)+"                       \n")
-						.append("\t*************************************************************\n");
-				return stringBuilder.toString();
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-		};
-
-		List<String> result = Repository.getInstance()
-				.executeQuery("Select * from  Appointments where PatientID="+id, mapper); // todo SQL DATE in the future
-
-		if(result.isEmpty()) {
-			System.out.println("*******You Currently Have No Appointments********");
-			System.out.println("Enter 3 To Book Appointment!!");
-		} else {
-			result.forEach(System.out::println);
-		}
-    	
-    }
     public void AppointmentHistory(int id)  {
 		Function <ResultSet, String> mapper = resultSet -> {
 			try {

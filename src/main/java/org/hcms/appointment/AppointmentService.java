@@ -7,4 +7,6 @@ import java.util.List;
 public interface AppointmentService {
     List<Appointment> getAppointments();
     boolean saveAppointment(Appointment appointment);
+
+    List<Appointment> getAppointmentByPatientId(int patientId);
 }

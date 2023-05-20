@@ -7,4 +7,6 @@ import java.util.List;
 public interface DoctorReportOnAppointment {
 
     List<Report> getReport();
+
+    List<Report> getReportByPatientId(int patientId);
 }
