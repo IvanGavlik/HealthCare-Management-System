@@ -1,14 +1,11 @@
 /**********************************************************|Doctor Class|*********************************************************/
 package org.hcms.doctor;
-import org.hcms.admin.Register;
 import org.hcms.data.Repository;
 import org.hcms.person.Person;
 import org.hcms.report.Report;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;

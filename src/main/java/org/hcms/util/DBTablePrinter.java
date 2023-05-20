@@ -31,6 +31,7 @@ import java.util.StringJoiner;
  *     People: Everybody who contributed but especially user102008</p>
  *
  */
+@Deprecated
 public class DBTablePrinter {
 
     /**

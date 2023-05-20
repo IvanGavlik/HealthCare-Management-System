@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
+@Deprecated
 public class Report
 {
 	Scanner input=new Scanner(System.in);

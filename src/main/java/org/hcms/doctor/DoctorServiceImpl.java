@@ -16,7 +16,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
     @Override
     public List<Doctor> getDoctors() {
-        Function<ResultSet, org.hcms.data.Doctor> dbRowToDoctor = rs -> {
+        Function<ResultSet,Doctor> dbRowToDoctor = rs -> {
             try {
                 Doctor d = new Doctor();
                 d.setId(rs.getInt("DoctorID"));
@@ -38,25 +38,24 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public void addDoctor(Doctor doctor) {
+    public boolean addDoctor(Doctor doctor) {
         int docid = autoDoctorID();
 
         boolean done = Repository.getInstance()
                 .executeUpdate("insert into Users values('"+docid+"','"+"Doctor"+"','"+ doctor.getPassword()+"')");
 
         if(!done) {
-            System.out.println("Doctor not added!!");
-            return;
+            return false;
         }
 
         done = Repository.getInstance()
                 .executeUpdate("INSERT INTO Doctors VALUES ('"+docid+"','"+doctor.getFirstName()+"','"+doctor.getLastName()+"','"+doctor.getGender()+"','"+doctor.getContactNumber()+"','"+doctor.getAge()+"','"+doctor.getEntryCharge()+"','"+doctor.getQualification()+"','"+doctor.getDoctorType()+"','"+doctor.getEmail()+"')");
-        if (done) {
-            System.out.println("Doctor Added Successully");
-        } else {
-            System.out.println("Doctor not added!!");
+        if (!done) {
+            // TODO roolback added user
+//            Repository.getInstance().executeUpdate("delete  from Doctors where DoctorID = "+docid " and ");
         }
 
+        return done;
     }
     private int autoDoctorID()  {
         final String query = "Select MAX(UserID) as NextUserID from Users where userType='Doctor'";
@@ -73,5 +72,10 @@ public class DoctorServiceImpl implements DoctorService {
             return 1;
         }
         return i.get(0) + 1;
+    }
+
+    @Override
+    public boolean removeDoctor(int id) {
+        return Repository.getInstance().executeUpdate("delete from Doctors where DoctorID = "+id);
     }
 }

@@ -1,13 +1,12 @@
 package org.hcms.admin;
 
+import org.hcms.data.Appointment;
 import org.hcms.data.Doctor;
+import org.hcms.data.Feedback;
 import org.hcms.data.Patient;
-import org.hcms.doctor.DoctorManager;
 import org.hcms.person.Person;
 import org.hcms.util.TerminalTablePrinter;
 
-import javax.print.Doc;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -113,5 +112,27 @@ public class AdminTerminalView {
         doctor.setDoctorType(doctorType);
         doctor.setPassword(password);
         return doctor;
+    }
+
+    public void viewAppointments(List<Appointment> appointments) {
+        List<String> header = Arrays.asList("Appointment ID", "Problem", "Patient ID", "Doctor ID", "Appointment Status",
+                "Fee", "Payment Status");
+
+        Function<Appointment, List<String>> mapper = (el) ->
+                Arrays.asList(String.valueOf(el.getId()), el.getProblem(), String.valueOf(el.getPatientId()),
+                        String.valueOf(el.getDoctorId()), el.getAppointmentStatus(), String.valueOf(el.getDoctorFees()),
+                        el.getPaymentStatus());
+
+        TerminalTablePrinter.printTable(header, appointments, mapper);
+    }
+
+    public void viewFeedbacks(List<Feedback> feedbacks) {
+        List<String> header = Arrays.asList("Feedback ID", "Points", "Doctor  Nature", "Location", "Patient Comment");
+
+        Function<Feedback, List<String>> mapper = (el) ->
+                Arrays.asList(String.valueOf(el.getId()), String.valueOf(el.getPoints()), el.getLocation(),
+                        el.getLocation(), el.getPatientComment());
+
+        TerminalTablePrinter.printTable(header, feedbacks, mapper);
     }
 }

@@ -1,7 +1,7 @@
  //***********************************PATIENT-CLASS***********************************//
 package org.hcms.patient;
 import org.hcms.admin.Register;
-import org.hcms.appointment.Appointment;
+import org.hcms.appointment.AppointmentManager;
 import org.hcms.data.Repository;
 import org.hcms.person.Person;
 import org.hcms.util.DBTablePrinter;
@@ -116,7 +116,7 @@ import java.util.function.Function;
     /***********************************************************************************************/  
     public void BookAppointment(int id) 
     {
-    	Appointment ap=new Appointment();
+    	AppointmentManager ap=new AppointmentManager();
     	ap.BookAppointment(id);  
     	
     }

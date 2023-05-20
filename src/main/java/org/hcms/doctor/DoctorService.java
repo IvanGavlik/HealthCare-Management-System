@@ -8,5 +8,7 @@ public interface DoctorService {
 
     List<Doctor> getDoctors();
 
-    void addDoctor(Doctor doctor);
+    boolean addDoctor(Doctor doctor);
+
+    boolean removeDoctor(int id);
 }

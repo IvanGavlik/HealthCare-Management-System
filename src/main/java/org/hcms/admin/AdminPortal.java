@@ -1,9 +1,13 @@
 package org.hcms.admin;
 
+import org.hcms.appointment.AppointmentService;
+import org.hcms.appointment.AppointmentServiceImpl;
 import org.hcms.data.Repository;
 import org.hcms.doctor.DoctorManager;
 import org.hcms.doctor.DoctorService;
 import org.hcms.doctor.DoctorServiceImpl;
+import org.hcms.patient.PatientFeedback;
+import org.hcms.patient.PatientFeedbackImpl;
 import org.hcms.patient.PatientService;
 import org.hcms.patient.PatientServiceImpl;
 
@@ -14,6 +18,9 @@ public class AdminPortal {
     AdminTerminalView adminView = new AdminTerminalView();
     DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
     PatientService patientService = new PatientServiceImpl(Repository.getInstance());
+    AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
+
+    PatientFeedback patientFeedback = new PatientFeedbackImpl(Repository.getInstance());
 
     Admin a = new Admin();
     private Scanner sc;
@@ -49,24 +56,32 @@ public class AdminPortal {
                     break;
                 }
                 case 3: {
-                    doctorService.addDoctor(adminView.addDoctor());
+                    boolean done = doctorService.addDoctor(adminView.addDoctor());
+                    if (done) {
+                        System.out.println("Doctor added!!");
+                    } else {
+                        System.out.println("Doctor not added!!");
+                    }
                     break;
                 }
                 case 4: {
-                    /*To Remove Doctor*/
                     System.out.println("Enter doctorID!!");
                     int id=sc.nextInt();
-                    a.RemoveDoctor(id);
+
+                    boolean done = doctorService.removeDoctor(id);
+                    if (done) {
+                        System.out.println("Doctor Removed Succesfully!!");
+                    } else {
+                        System.out.println("Doctor not Removed");
+                    }
                     break;
                 }
                 case 5: {
-                    //Appointments
-                    a.ViewAppointment();
+                    adminView.viewAppointments(appointmentService.getAppointments());
                     break;
                 }
                 case 6: {
-                    //TO VIEW FEEDBACK GIVEN BY THE PATIENT//
-                    a.ViewFeedback();
+                    adminView.viewFeedbacks(patientFeedback.getFeedbacks());
                     break;
                 }
                 case 7: {

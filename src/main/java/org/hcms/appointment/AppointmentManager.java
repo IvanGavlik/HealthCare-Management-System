@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
-public class Appointment 
+public class AppointmentManager
 {
 	private  int Apid;
 	private int pid;
