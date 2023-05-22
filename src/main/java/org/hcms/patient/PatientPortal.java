@@ -4,6 +4,8 @@ import org.hcms.appointment.AppointmentService;
 import org.hcms.appointment.AppointmentServiceImpl;
 import org.hcms.appointment.PaymentService;
 import org.hcms.appointment.PaymentServiceImpl;
+import org.hcms.data.Login;
+import org.hcms.data.LoginImpl;
 import org.hcms.data.Repository;
 import org.hcms.doctor.DoctorReportOnAppointment;
 import org.hcms.doctor.DoctorReportOnAppointmentImpl;
@@ -23,10 +25,11 @@ public class PatientPortal {
     private AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
     private PaymentService paymentService = new PaymentServiceImpl();
     private DoctorReportOnAppointment doctorReportOnAppointment = new DoctorReportOnAppointmentImpl(Repository.getInstance());
+    private PatientFeedback patientFeedback = new PatientFeedbackImpl(Repository.getInstance());
+    private Login login = new LoginImpl(Repository.getInstance());
     public void display() {
         Patients p = new Patients();
         boolean checkPatient = false;
-        int flag = 0;
         System.out.println("*****************Welcome to patient portal***********************");
         Scanner sc = new Scanner(System.in);
         int id;
@@ -36,26 +39,9 @@ public class PatientPortal {
         System.out.print("Password:");
         pd = sc.next();
 
-        Function<ResultSet, Integer> mapper = rs -> {
-            try {
-                if(rs.getInt(1)==id
-                        && rs.getString(2).compareTo("Patient")==0
-                        && (rs.getString(3).compareTo(pd)==0 ))  {
-                    return 1;
-                }
-                return -1;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        };
-        flag = Repository.getInstance().executeQuery("Select * from Users", mapper)
-                .stream()
-                .filter( el -> el == 1)
-                .collect(Collectors.toList())
-                .get(0);
+        boolean flag = login.loginUser(id, pd, "Patient");
 
-        if(flag==1) {
-            p=new Patients();
+        if(flag) {
             while(true)  {
                 System.out.print("\t**********************************************************************************************\n");
                 System.out.print("\t*                                                                                            *\n");
@@ -64,9 +50,8 @@ public class PatientPortal {
                 System.out.print("\t*                  3.BookAppointments                                                        *\n");
                 System.out.print("\t*                  4.ViewReport                                                              *\n");
                 System.out.print("\t*                  5.viewAppointments                                                        *\n");
-                System.out.print("\t*                  6.viewCompletedAppointments                                               *\n");
-                System.out.print("\t*                  7.Give FeedBack                                                           *\n");
-                System.out.print("\t*                  8.LOGOUT                                                                  *\n");
+                System.out.print("\t*                  6.Give FeedBack                                                           *\n");
+                System.out.print("\t*                  7.LOGOUT                                                                  *\n");
                 System.out.print("\t**********************************************************************************************\n");
                 int ch=sc.nextInt();
                 switch(ch)  {
@@ -98,14 +83,16 @@ public class PatientPortal {
                         break;
                     }
                     case 6: {
-                        p.AppointmentHistory(id) ;
+                        boolean done = patientFeedback.addFeedback(patientTerminalView.createFeedback(id));
+                        if (done) {
+                            System.out.println("-->>Thank You For Visiting Us<<--");
+                            System.out.println("-->>Your Feedback Meant a lot to Us<<--");
+                        } else {
+                            System.out.println("-->>Adding Feedback Failed<<--");
+                        }
                         break;
                     }
                     case 7: {
-                        p.Givefeedback(id) ;
-                        break;
-                    }
-                    case 8: {
                         checkPatient = true;
                         break;
                     }
@@ -117,8 +104,7 @@ public class PatientPortal {
                     break;
             }
         }
-        else
-        {
+        else  {
             System.out.println("Invali UserID or password!!!");
         }
     }

@@ -7,4 +7,5 @@ import java.util.List;
 public interface PatientFeedback {
 
     List<Feedback> getFeedbacks();
+    boolean addFeedback(Feedback feedback);
 }

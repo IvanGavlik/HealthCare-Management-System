@@ -27,7 +27,6 @@ public class PatientTerminalView {
                 Arrays.asList(patient),
                 patientString);
     }
-
     public void showDoctors(List<Doctor> doctor) {
         List<String> header = Arrays.asList("Doctor ID", "First Name", "Last Name", "Contact Number", "Age", "Charge",
                 "Qualification", "Type", "Email");
@@ -39,7 +38,6 @@ public class PatientTerminalView {
 
         TerminalTablePrinter.printTable(header, doctor, mapper);
     }
-
     public Appointment createAppointment(int patientId, DoctorService doctorService, PaymentService paymentService) {
         final Scanner sc = new Scanner(System.in);
         System.out.println("Appointment:");
@@ -71,7 +69,6 @@ public class PatientTerminalView {
 
         return a;
     }
-
     private Doctor chooseDoctor(DoctorService doctorService) {
         System.out.println("*** Choose Doctor Type According to your problem!! ***");
         System.out.print("\t**********************************************************************************************\n");
@@ -114,7 +111,6 @@ public class PatientTerminalView {
             }
         }
     }
-
     private Doctor choseDoctorByType(String type, Scanner sc, DoctorService doctorService) {
         TerminalTablePrinter.printTable(
                 Arrays.asList("Doctor ID", "First Name", "Last Name", "Charge", "Qualification", "Type"),
@@ -153,7 +149,6 @@ public class PatientTerminalView {
             return "NotPayed";
         }
     }
-
     public void viewReports(List<Report> reports) {
         List<String> header = Arrays.asList("Report ID", "Appointment ID", "Patient ID", "Doctor ID", "Prescribed", "Doctor Comment");
 
@@ -163,7 +158,6 @@ public class PatientTerminalView {
 
         TerminalTablePrinter.printTable(header, reports, mapper);
     }
-
     public void viewAppointments(List<Appointment> appointments) {
         List<String> header = Arrays.asList("Appointment ID", "Problem", "Patient ID", "Doctor ID", "Appointment Status",
                 "Fee", "Payment Status");
@@ -174,6 +168,30 @@ public class PatientTerminalView {
                         el.getPaymentStatus());
 
         TerminalTablePrinter.printTable(header, appointments, mapper);
+    }
+    public Feedback createFeedback(int patientId) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*********Please Fill The Following Feedback Form*********");
+        System.out.println("Patient Id:"+patientId);
+        System.out.println("Please Give points to our services out of 10 :");
+        short points=sc.nextShort();
+        System.out.println("Nature Of The Doctor");
+        String docNature = sc.next();
+        docNature +=sc.nextLine();
+        System.out.println("Enter Your Address below");
+        String location = sc.next();
+        location +=sc.nextLine();
+        System.out.println("Your Comment:");
+        String comment = sc.next();
+        comment +=sc.nextLine();
+
+        Feedback feedback = new Feedback();
+        feedback.setId(patientId);
+        feedback.setPoints(points);
+        feedback.setDocNature(docNature);
+        feedback.setLocation(location);
+        feedback.setPatientComment(comment);
+        return feedback;
     }
 
 }

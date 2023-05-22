@@ -32,4 +32,13 @@ public class PatientFeedbackImpl implements PatientFeedback {
         };
         return repository.executeQuery("SELECT * FROM feedback", mapToFeedback);
     }
+
+    @Override
+    public boolean addFeedback(Feedback feedback) {
+        return Repository.getInstance()
+                .executeUpdate("INSERT INTO feedback VALUES ('"+feedback.getId()+"','"+feedback.getPoints()+"','"
+                        +feedback.getDocNature()+"','"+feedback.getLocation()+"','"+feedback.getPatientComment()+"')");
+    }
+
+
 }
