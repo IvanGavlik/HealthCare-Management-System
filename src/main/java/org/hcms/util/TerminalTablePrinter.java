@@ -28,8 +28,11 @@ public class TerminalTablePrinter {
     }
 
     public static <ELEMENT> void printTable(List<String> header, List<ELEMENT> rows, Function<ELEMENT, List<String>> mapper) {
-        if (header == null || rows == null || header.isEmpty() || rows.isEmpty() || mapper == null) {
+        if (header == null || header.isEmpty() || mapper == null) {
             return;
+        }
+        if (rows == null || rows.isEmpty()) {
+            System.out.println("No data");
         }
 
         List<List<String>> rowsTable = rows

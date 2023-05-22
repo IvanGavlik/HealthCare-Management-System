@@ -12,11 +12,8 @@ import org.hcms.doctor.DoctorReportOnAppointmentImpl;
 import org.hcms.doctor.DoctorService;
 import org.hcms.doctor.DoctorServiceImpl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
 
 public class PatientPortal {
     private PatientTerminalView patientTerminalView = new PatientTerminalView();
@@ -28,84 +25,78 @@ public class PatientPortal {
     private PatientFeedback patientFeedback = new PatientFeedbackImpl(Repository.getInstance());
     private Login login = new LoginImpl(Repository.getInstance());
     public void display() {
-        Patients p = new Patients();
         boolean checkPatient = false;
         System.out.println("*****************Welcome to patient portal***********************");
         Scanner sc = new Scanner(System.in);
-        int id;
-        String pd;
-        System.out.print("ID:");
-        id = sc.nextInt();
-        System.out.print("Password:");
-        pd = sc.next();
-
-        boolean flag = login.loginUser(id, pd, "Patient");
-
-        if(flag) {
-            while(true)  {
-                System.out.print("\t**********************************************************************************************\n");
-                System.out.print("\t*                                                                                            *\n");
-                System.out.print("\t*                  1.ViewProfile                                                             *\n");
-                System.out.print("\t*                  2.viewDoctors                                                             *\n");
-                System.out.print("\t*                  3.BookAppointments                                                        *\n");
-                System.out.print("\t*                  4.ViewReport                                                              *\n");
-                System.out.print("\t*                  5.viewAppointments                                                        *\n");
-                System.out.print("\t*                  6.Give FeedBack                                                           *\n");
-                System.out.print("\t*                  7.LOGOUT                                                                  *\n");
-                System.out.print("\t**********************************************************************************************\n");
-                int ch=sc.nextInt();
-                switch(ch)  {
-                    case 1:  {
-                        patientTerminalView.showPatient(patientService.getPatient(id));
-                        break;
-                    }
-                    case 2: {
-                        patientTerminalView.showDoctors(doctorService.getDoctors());
-                        break;
-                    }
-                    case 3:  {
-                        boolean done = appointmentService.saveAppointment(
-                                patientTerminalView.createAppointment(id, doctorService, paymentService)
-                        );
-                        if (done) {
-                            System.out.println("ThankYou For visiting us your Appointment Has Been confirmed!!!");
-                        } else {
-                            System.out.print("Appointment not booked");
-                        }
-                        break;
-                    }
-                    case 4: {;
-                        patientTerminalView.viewReports(doctorReportOnAppointment.getReportByPatientId(id));
-                        break;
-                    }
-                    case 5: {
-                       patientTerminalView.viewAppointments(appointmentService.getAppointmentByPatientId(id));
-                        break;
-                    }
-                    case 6: {
-                        boolean done = patientFeedback.addFeedback(patientTerminalView.createFeedback(id));
-                        if (done) {
-                            System.out.println("-->>Thank You For Visiting Us<<--");
-                            System.out.println("-->>Your Feedback Meant a lot to Us<<--");
-                        } else {
-                            System.out.println("-->>Adding Feedback Failed<<--");
-                        }
-                        break;
-                    }
-                    case 7: {
-                        checkPatient = true;
-                        break;
-                    }
-                    default: {
-                        System.out.println("Please Choose An Appropriate Option!!!");
-                    }
-                }
-                if(checkPatient)
-                    break;
-            }
-        }
-        else  {
+        int id = patientTerminalView.login(login);
+        if(id == -1) {
             System.out.println("Invali UserID or password!!!");
+            return;
         }
+        while(true)  {
+            menu();
+            int ch = sc.nextInt();
+            switch(ch)  {
+                case 1:  {
+                    patientTerminalView.showPatient(patientService.getPatient(id));
+                    break;
+                }
+                case 2: {
+                    patientTerminalView.showDoctors(doctorService.getDoctors());
+                    break;
+                }
+                case 3: {
+                    boolean done = appointmentService.saveAppointment(
+                            patientTerminalView.createAppointment(id, doctorService, paymentService)
+                    );
+                    if (done) {
+                        System.out.println("ThankYou For visiting us your Appointment Has Been confirmed!!!");
+                    } else {
+                        System.out.print("Appointment not booked");
+                    }
+                    break;
+                }
+                case 4: {;
+                    patientTerminalView.viewReports(doctorReportOnAppointment.getReportByPatientId(id));
+                    break;
+                }
+                case 5: {
+                    patientTerminalView.viewAppointments(appointmentService.getAppointmentByPatientId(id));
+                    break;
+                }
+                case 6: {
+                    boolean done = patientFeedback.addFeedback(patientTerminalView.createFeedback(id));
+                    if (done) {
+                        System.out.println("-->>Thank You For Visiting Us<<--");
+                        System.out.println("-->>Your Feedback Meant a lot to Us<<--");
+                    } else {
+                        System.out.println("-->>Adding Feedback Failed<<--");
+                    }
+                    break;
+                }
+                case 7: {
+                    checkPatient = true;
+                    break;
+                }
+                default: {
+                    System.out.println("Please Choose An Appropriate Option!!!");
+                }
+            }
+            if(checkPatient)
+                break;
+        }
+    }
+
+    private static void menu() {
+        System.out.print("\t**********************************************************************************************\n");
+        System.out.print("\t*                                                                                            *\n");
+        System.out.print("\t*                  1.ViewProfile                                                             *\n");
+        System.out.print("\t*                  2.viewDoctors                                                             *\n");
+        System.out.print("\t*                  3.BookAppointments                                                        *\n");
+        System.out.print("\t*                  4.ViewReport                                                              *\n");
+        System.out.print("\t*                  5.viewAppointments                                                        *\n");
+        System.out.print("\t*                  6.Give FeedBack                                                           *\n");
+        System.out.print("\t*                  7.LOGOUT                                                                  *\n");
+        System.out.print("\t**********************************************************************************************\n");
     }
 }
