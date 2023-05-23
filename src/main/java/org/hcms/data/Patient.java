@@ -13,6 +13,8 @@ public class Patient {
     private String bloodGroup;
     private String address;
 
+    private String password;
+
     public int getId() {
         return id;
     }
@@ -85,17 +87,24 @@ public class Patient {
         this.address = address;
     }
 
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Patient patient = (Patient) o;
-        return id == patient.id && age == patient.age && Objects.equals(firstName, patient.firstName) && Objects.equals(lastName, patient.lastName) && Objects.equals(gender, patient.gender) && Objects.equals(contactNumber, patient.contactNumber) && Objects.equals(email, patient.email) && Objects.equals(bloodGroup, patient.bloodGroup) && Objects.equals(address, patient.address);
+        return id == patient.id && age == patient.age && Objects.equals(firstName, patient.firstName) && Objects.equals(lastName, patient.lastName) && Objects.equals(gender, patient.gender) && Objects.equals(contactNumber, patient.contactNumber) && Objects.equals(email, patient.email) && Objects.equals(bloodGroup, patient.bloodGroup) && Objects.equals(address, patient.address) && Objects.equals(password, patient.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, gender, contactNumber, age, email, bloodGroup, address);
+        return Objects.hash(id, firstName, lastName, gender, contactNumber, age, email, bloodGroup, address, password);
     }
 
     @Override
@@ -110,6 +119,7 @@ public class Patient {
                 ", email='" + email + '\'' +
                 ", bloodGroup='" + bloodGroup + '\'' +
                 ", address='" + address + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

@@ -3,7 +3,7 @@ import org.hcms.admin.*;
 import org.hcms.data.Repository;
 import org.hcms.doctor.DoctorManager;
 import org.hcms.patient.PatientPortal;
-import org.hcms.patient.Patients;
+import org.hcms.patient.PatientRegistrationPortal;
 
 import java.sql.*;
 import java.util.Scanner;
@@ -17,11 +17,11 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		AdminPortal adminPortal = new AdminPortal();
 		PatientPortal patientPortal = new PatientPortal();
+		PatientRegistrationPortal patientRegistrationPortal = new PatientRegistrationPortal();
 
 		System.out.println("\n\t******************************E-HealthCare-Management-Sytem***********************************\n");
 		boolean check = false;
 
-		Patients p=null;
 		DoctorManager d=null;
 		while(true) {
 	        System.out.print("\t**********************************************************************************************\n");
@@ -125,13 +125,9 @@ public class Main {
 		    	break;
 		    }
 		    /***********************************************************************************************/ 
-		    case 4:   /**For Patient Registration**/
-		    {
-		    	p=new Patients();
-		    	int pid=p.addPatient();
-		    	System.out.println("*** Fill the following details ***");
-		    	p.PatientRegistration(pid);//Patient Registration Form//
-		    	break;
+		    case 4: {
+				patientRegistrationPortal.display();
+				break;
 		    }
 		    case 5: {
 		    	System.out.println("**THANKS FOR VISITING US - Have A Nice Day**");

@@ -60,4 +60,48 @@ public class PatientServiceImpl implements PatientService {
         return Repository.getInstance()
                 .executeQuery("Select * from Patients where PatientID="+id, mapper).get(0);
     }
+
+    @Override
+    public boolean savePatient(Patient patient) {
+        patient.setId(autoPatientID());
+
+        boolean done = Repository.getInstance()
+                .executeUpdate("insert into Users values('"+patient.getId()+"','"+"Doctor"+"','"+ patient.getPassword()+"')");
+
+        if(!done) {
+            return false;
+        }
+
+        done = Repository.getInstance()
+                .executeUpdate("INSERT INTO Patients VALUES ('"+patient.getId()+"','"+patient.getFirstName()+"','"
+                        +patient.getLastName()+"','"+patient.getGender()+"','"+patient.getContactNumber()+"','"
+                        +patient.getAge()+"','"+patient.getEmail()+"','"+patient.getBloodGroup()+"','"
+                        +patient.getAddress()+"')");
+
+        if (!done) {
+            // TODO ROLL BACK USER
+            return false;
+        }
+        return done;
+    }
+
+    private int autoPatientID()  {
+        Function <ResultSet, Integer> mapper = resultSet -> {
+            try {
+                return resultSet.getInt(1);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        List<Integer> result = Repository.getInstance()
+                .executeQuery("Select MAX(userID) as 'NextPatientID' from Users", mapper);
+
+        if (result.isEmpty()) {
+            return 1;
+        }
+        return result.get(0) + 1;
+    }
+
+
 }
