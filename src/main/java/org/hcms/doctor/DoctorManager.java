@@ -18,35 +18,6 @@ public class DoctorManager {
 	Scanner sc=new Scanner(System.in);
 
 
-	//This function Show All Details Of the doctor//
-	public void showDoctorDetails(int d) {
-		final String query = "Select * from Doctors where DoctorID="+d;
-		final Function<ResultSet, String> mapper = (rs) -> {
-			try {
-				StringBuilder stringBuilder = new StringBuilder();
-				stringBuilder
-						.append("DoctorID:     "+rs.getInt(1))
-						.append(System.lineSeparator())
-						.append("Name:         "+rs.getString(2)+" "+rs.getString(3))
-						.append(System.lineSeparator())
-						.append("Qualification "+rs.getString(8))
-						.append(System.lineSeparator())
-						.append("Department    "+rs.getString(9))
-						.append(System.lineSeparator())
-						.append("Contact No:   "+rs.getString(5))
-						.append(System.lineSeparator())
-						.append("EmailId:      "+rs.getString(10))
-						.append(System.lineSeparator());
-				return stringBuilder.toString();
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-		};
-		Repository.getInstance()
-				.executeQuery(query, mapper)
-				.forEach(System.out::println);
-	}
-
 	public void viewAppointment(int docid) {
 
 		final String query = "Select * from  Appointments where DoctorID="+docid;

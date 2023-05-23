@@ -52,6 +52,17 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .executeQuery("Select * from  Appointments where PatientID="+patientId, mapDbRowToAppointment);
     }
 
+    @Override
+    public List<Appointment> getAppointmentPayedPendingByDoctorId(int doctorId) {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append("Select * from  Appointments ")
+                .append("where DoctorID = ").append(doctorId).append(" ")
+                .append("and PaymentStatus = 'Payed'").append(" ")
+                .append("and Appointment_Status = 'Pending'").append(";");
+        return Repository.getInstance()
+                .executeQuery(sqlBuilder.toString(), mapDbRowToAppointment);
+    }
+
     private int autoAppointmentID() {
         Function<ResultSet, Integer> mapper = (rs) -> {
             try {

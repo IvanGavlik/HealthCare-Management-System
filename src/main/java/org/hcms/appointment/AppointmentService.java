@@ -9,4 +9,6 @@ public interface AppointmentService {
     boolean saveAppointment(Appointment appointment);
 
     List<Appointment> getAppointmentByPatientId(int patientId);
+
+    List<Appointment> getAppointmentPayedPendingByDoctorId(int doctorId);
 }

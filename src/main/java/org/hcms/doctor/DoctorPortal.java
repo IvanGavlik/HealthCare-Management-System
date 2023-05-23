@@ -1,5 +1,7 @@
 package org.hcms.doctor;
 
+import org.hcms.appointment.AppointmentService;
+import org.hcms.appointment.AppointmentServiceImpl;
 import org.hcms.data.LoginImpl;
 import org.hcms.data.Repository;
 import org.hcms.terminalUtil.LoginTerminal;
@@ -12,8 +14,9 @@ public class DoctorPortal {
 
     private DoctorTerminalView doctorTerminalView = new DoctorTerminalView();
     private LoginTerminal loginTerminal = new LoginTerminal();
-
     private DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
+
+    private AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
     public void display() {
         DoctorManager d=null;
         boolean checkDoctor = false;
@@ -33,8 +36,7 @@ public class DoctorPortal {
                     break;
                 }
                 case 2: {
-                    d=new DoctorManager();
-                    d.viewAppointment(id);
+                    doctorTerminalView.showAppointment(appointmentService.getAppointmentPayedPendingByDoctorId(id));
                     break;
                 }
                 case 3: {
