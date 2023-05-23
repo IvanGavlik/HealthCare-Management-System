@@ -9,7 +9,11 @@ import java.util.Scanner;
 
 
 public class DoctorPortal {
+
+    private DoctorTerminalView doctorTerminalView = new DoctorTerminalView();
     private LoginTerminal loginTerminal = new LoginTerminal();
+
+    private DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
     public void display() {
         DoctorManager d=null;
         boolean checkDoctor = false;
@@ -25,8 +29,7 @@ public class DoctorPortal {
             int ch=sc.nextInt();
             switch(ch) {
                 case 1: {
-                    d=new DoctorManager();
-                    d.showDoctorDetails(id);
+                    doctorTerminalView.showDoctor(doctorService.getDoctor(id));
                     break;
                 }
                 case 2: {

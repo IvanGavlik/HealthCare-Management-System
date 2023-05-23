@@ -1,15 +1,10 @@
 package org.hcms;
 import org.hcms.admin.*;
-import org.hcms.data.Repository;
-import org.hcms.doctor.DoctorManager;
 import org.hcms.doctor.DoctorPortal;
 import org.hcms.patient.PatientPortal;
 import org.hcms.patient.PatientRegistrationPortal;
 
-import java.sql.*;
 import java.util.Scanner;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class Main {
 	@SuppressWarnings("resource")
