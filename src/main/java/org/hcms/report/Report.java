@@ -2,7 +2,7 @@ package org.hcms.report;
 
 import org.hcms.data.Repository;
 import org.hcms.doctor.DoctorReportOnAppointmentImpl;
-import org.hcms.util.TerminalTablePrinter;
+import org.hcms.terminalUtil.TerminalTablePrinter;
 
 
 import java.sql.ResultSet;

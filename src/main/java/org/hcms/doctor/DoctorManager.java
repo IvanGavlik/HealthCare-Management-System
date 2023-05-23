@@ -1,7 +1,6 @@
 /**********************************************************|Doctor Class|*********************************************************/
 package org.hcms.doctor;
 import org.hcms.data.Repository;
-import org.hcms.person.Person;
 import org.hcms.report.Report;
 
 import java.sql.ResultSet;
@@ -11,8 +10,7 @@ import java.util.Scanner;
 import java.util.function.Function;
 
 @Deprecated
-public class DoctorManager extends Person
-{
+public class DoctorManager {
 	int docid;//DoctorID
 	String Doctor_Type;//Type of doctor
 	String Qualification;//

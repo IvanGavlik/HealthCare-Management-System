@@ -11,12 +11,14 @@ import org.hcms.doctor.DoctorReportOnAppointment;
 import org.hcms.doctor.DoctorReportOnAppointmentImpl;
 import org.hcms.doctor.DoctorService;
 import org.hcms.doctor.DoctorServiceImpl;
+import org.hcms.terminalUtil.LoginTerminal;
 
 import java.util.Scanner;
 
 
 public class PatientPortal {
     private PatientTerminalView patientTerminalView = new PatientTerminalView();
+    private LoginTerminal loginTerminal = new LoginTerminal();
     private PatientService patientService = new PatientServiceImpl(Repository.getInstance());
     private DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
     private AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
@@ -28,7 +30,7 @@ public class PatientPortal {
         boolean checkPatient = false;
         System.out.println("*****************Welcome to patient portal***********************");
         Scanner sc = new Scanner(System.in);
-        int id = patientTerminalView.login(login);
+        int id = loginTerminal.login(login, "Patient");
         if(id == -1) {
             System.out.println("Invali UserID or password!!!");
             return;

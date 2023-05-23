@@ -1,12 +1,10 @@
 package org.hcms.patient;
 
-import com.mysql.cj.conf.ConnectionUrlParser;
 import org.hcms.appointment.Payment;
 import org.hcms.appointment.PaymentService;
-import org.hcms.appointment.PaymentServiceImpl;
 import org.hcms.data.*;
 import org.hcms.doctor.DoctorService;
-import org.hcms.util.TerminalTablePrinter;
+import org.hcms.terminalUtil.TerminalTablePrinter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -193,21 +191,6 @@ public class PatientTerminalView {
         feedback.setLocation(location);
         feedback.setPatientComment(comment);
         return feedback;
-    }
-
-    public int login(Login login) {
-        Scanner sc = new Scanner(System.in);
-        int id;
-        String pd;
-        System.out.print("ID:");
-        id = sc.nextInt();
-        System.out.print("Password:");
-        pd = sc.next();
-
-         if(login.loginUser(id, pd, "Patient")) {
-             return id;
-         }
-         return -1;
     }
 
 }

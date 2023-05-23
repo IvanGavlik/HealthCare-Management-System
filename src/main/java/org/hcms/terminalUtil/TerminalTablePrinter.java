@@ -1,4 +1,4 @@
-package org.hcms.util;
+package org.hcms.terminalUtil;
 
 import java.util.*;
 import java.util.function.Function;

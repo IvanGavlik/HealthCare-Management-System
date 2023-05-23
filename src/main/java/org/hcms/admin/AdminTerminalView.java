@@ -1,8 +1,8 @@
 package org.hcms.admin;
 
 import org.hcms.data.*;
-import org.hcms.person.Person;
-import org.hcms.util.TerminalTablePrinter;
+import org.hcms.terminalUtil.PersonTerminal;
+import org.hcms.terminalUtil.TerminalTablePrinter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,8 +51,7 @@ class AdminTerminalView {
         }
 
         System.out.println("Enter the following Details");
-        Person person = new Person();
-        person.UserInformation();
+        PersonTerminal person = PersonTerminal.buildPerson();
         System.out.println("EntryFee");
         double entryCharge = sc.nextDouble();
         System.out.println("Qualification:");
@@ -96,12 +95,11 @@ class AdminTerminalView {
         }
 
         Doctor doctor = new Doctor();
-        doctor.setFirstName(person.getFirst_Name());
-        doctor.setLastName(person.getLast_Name());
-        doctor.setEmail(person.getEmail_Address());
-        doctor.setEmail(person.getEmail_Address());
+        doctor.setFirstName(person.getFirstName());
+        doctor.setLastName(person.getLastName());
+        doctor.setEmail(person.getEmailAddress());
         doctor.setGender(person.getGender());
-        doctor.setContactNumber(person.getCN());
+        doctor.setContactNumber(person.getContactNumber());
         doctor.setAge((short) person.getAge());
         doctor.setEntryCharge(entryCharge);
         doctor.setQualification(qualification);

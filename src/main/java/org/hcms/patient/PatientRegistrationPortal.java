@@ -2,7 +2,7 @@ package org.hcms.patient;
 
 import org.hcms.data.Patient;
 import org.hcms.data.Repository;
-import org.hcms.person.Person;
+import org.hcms.terminalUtil.PersonTerminal;
 
 import java.util.Scanner;
 
@@ -29,18 +29,18 @@ public class PatientRegistrationPortal {
             }
         }
 
-        Person person = new Person();
-        person.UserInformation();
+
+        PersonTerminal person = PersonTerminal.buildPerson();
         System.out.println("BloodGroup:");
         String bloodGroup=sc.next();
 
         Patient patient = new Patient();
-        patient.setFirstName(person.getFirst_Name());
-        patient.setLastName(person.getLast_Name());
+        patient.setFirstName(person.getFirstName());
+        patient.setLastName(person.getLastName());
         patient.setGender(person.getGender());
-        patient.setContactNumber(person.getCN());
+        patient.setContactNumber(person.getContactNumber());
         patient.setAge((short) person.getAge());
-        patient.setEmail(person.getEmail_Address());
+        patient.setEmail(person.getEmailAddress());
         patient.setBloodGroup(bloodGroup);
         patient.setAddress(person.getAddress());
         boolean done = patientService.savePatient(patient);
