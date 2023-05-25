@@ -21,17 +21,8 @@ public class Main {
 
 
 		while(true) {
-	        System.out.print("\t**********************************************************************************************\n");
-	        System.out.print("\t*                                                                                            *\n");
-	        System.out.print("\t*                  1. ADMIN - LOGIN                                                          *\n");
-	        System.out.print("\t*                  2. PATIENT - LOGIN                                                        *\n");
-	        System.out.print("\t*                  3. DOCTOR - LOGIN                                                         *\n");
-	        System.out.print("\t*                                                                                            *\n");
-	        System.out.print("\t*                  4. PATIENT-SIGN-UP                                                        *\n");
-	        System.out.print("\t*                                                                                            *\n");
-	        System.out.print("\t*                  5. EXIT                                                                   *\n");
-	        System.out.print("\t**********************************************************************************************\n");	
-		int choice = sc.nextInt();
+			menu();
+			int choice = sc.nextInt();
 		switch (choice)  {
 		    case 1:  {
 				adminPortal.display();
@@ -61,5 +52,18 @@ public class Main {
 		if(check)
 			break;
 		}
+	}
+
+	private static void menu() {
+		System.out.print("\t**********************************************************************************************\n");
+		System.out.print("\t*                                                                                            *\n");
+		System.out.print("\t*                  1. ADMIN - LOGIN                                                          *\n");
+		System.out.print("\t*                  2. PATIENT - LOGIN                                                        *\n");
+		System.out.print("\t*                  3. DOCTOR - LOGIN                                                         *\n");
+		System.out.print("\t*                                                                                            *\n");
+		System.out.print("\t*                  4. PATIENT-SIGN-UP                                                        *\n");
+		System.out.print("\t*                                                                                            *\n");
+		System.out.print("\t*                  5. EXIT                                                                   *\n");
+		System.out.print("\t**********************************************************************************************\n");
 	}
 }
