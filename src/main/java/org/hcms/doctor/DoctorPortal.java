@@ -2,15 +2,12 @@ package org.hcms.doctor;
 
 import org.hcms.appointment.AppointmentService;
 import org.hcms.appointment.AppointmentServiceImpl;
-import org.hcms.data.Appointment;
 import org.hcms.data.LoginImpl;
-import org.hcms.data.Report;
 import org.hcms.data.Repository;
 import org.hcms.terminalUtil.LoginTerminal;
 
 
-import java.util.List;
-import java.util.Optional;
+
 import java.util.Scanner;
 
 

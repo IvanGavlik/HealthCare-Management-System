@@ -6,27 +6,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class TerminalTablePrinter {
-    public static void main(String[] args) {
-        class Test {
-            String s;
-            String s1;
-            String s2;
-            public Test(String s, String s1, String s2) {
-                this.s = s;
-                this.s1 = s1;
-                this.s2 = s2;
-            }
-        }
-
-        Function<Test, List<String>> mapper = (el) -> {
-            return Arrays.asList(el.s, el.s1, el.s2);
-        };
-
-        List<String> header = Arrays.asList("id", "First Name", "Last Name");
-
-        printTable(header, Arrays.asList(new Test("1", "Mako", "Polo")), mapper);
-    }
-
     public static <ELEMENT> void printTable(List<String> header, List<ELEMENT> rows, Function<ELEMENT, List<String>> mapper) {
         if (header == null || header.isEmpty() || mapper == null) {
             return;

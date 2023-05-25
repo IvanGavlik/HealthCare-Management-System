@@ -79,10 +79,10 @@ public final class AdminPortal {
                 default: {
                     System.out.println("Please Choose An Appropriate Option!!!");
                 }
-            }//end of switch
+            }
             if(checkadmin)
                 break;
-        }//end of while
+        }
     }
     private void menu() {
         System.out.print("\t**********************************************************************************************\n");
