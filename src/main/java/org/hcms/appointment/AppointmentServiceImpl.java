@@ -6,6 +6,7 @@ import org.hcms.data.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class AppointmentServiceImpl implements AppointmentService {
@@ -61,6 +62,24 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .append("and Appointment_Status = 'Pending'").append(";");
         return Repository.getInstance()
                 .executeQuery(sqlBuilder.toString(), mapDbRowToAppointment);
+    }
+
+    @Override
+    public Optional<Appointment> getAppointmentByIdAndPayedPendingByDoctorId(int appId, int doctorId) {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append("Select * from  Appointments ")
+                .append("where AppointmentID = ").append(appId).append(" ")
+                .append("and DoctorID = ").append(doctorId).append(" ")
+                .append("and PaymentStatus = 'Payed'").append(" ")
+                .append("and Appointment_Status = 'Pending'").append(";");
+        List<Appointment> appointmentLis = Repository.getInstance()
+                .executeQuery(sqlBuilder.toString(), mapDbRowToAppointment);
+
+        if (appointmentLis.size() == 1) {
+            return Optional.of(appointmentLis.get(0));
+        } else {
+            return Optional.empty();
+        }
     }
 
     private int autoAppointmentID() {

@@ -38,5 +38,44 @@ public class DoctorReportOnAppointmentImpl implements DoctorReportOnAppointment 
         return repository.executeQuery("select * from Reports where PatientID =" + patientId, dbRowToReport);
     }
 
+    @Override
+    public boolean save(Report report) {
+        report.setId(autoReportID());
+
+        boolean done = Repository.getInstance()
+                .executeUpdate("INSERT INTO Reports VALUES ('"+report.getId()+"','"+report.getAppointmentID()+"','"
+                        +report.getPatientID()+"','"+report.getDoctorID()+"','"+report.getMedicinePrescribed()+"','"+
+                        report.getDoctorComment()+"')");
+        if (!done) {
+            return false;
+        }
+
+        done = Repository.getInstance()
+                .executeUpdate("UPDATE Appointments SET Appointment_Status='Completed' WHERE AppointmentID="
+                        +report.getAppointmentID());
+        if (!done) {
+            // TODO ROOLBACK INSERT VALUES
+            return false;
+        }
+
+        return done;
+    }
+
+    private int autoReportID() {
+        Function<ResultSet, Integer> mapper = (rs) -> {
+            try {
+                return rs.getInt(1);
+            } catch (Exception ex) {
+                throw new RuntimeException();
+            }
+        };
+        List<Integer> result =  Repository.getInstance()
+                .executeQuery("Select MAX(ReportId) as NextUserID from Reports", mapper);
+
+        if (result.isEmpty()) {
+            return 1;
+        }
+        return result.get(0) + 1;
+    }
 
 }

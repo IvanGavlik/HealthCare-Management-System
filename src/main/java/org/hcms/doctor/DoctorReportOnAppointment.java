@@ -9,4 +9,6 @@ public interface DoctorReportOnAppointment {
     List<Report> getReport();
 
     List<Report> getReportByPatientId(int patientId);
+
+    boolean save(Report report);
 }

@@ -5,7 +5,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class TerminalTablePrinter {
+public final class TerminalTablePrinter {
     public static void main(String[] args) {
         class Test {
             String s;

@@ -19,7 +19,6 @@ public final class AdminPortal {
     private PatientFeedback patientFeedback = new PatientFeedbackImpl(Repository.getInstance());
     private DoctorReportOnAppointment doctorReportOnAppointment = new DoctorReportOnAppointmentImpl(Repository.getInstance());
     public void display() {
-        DoctorManager d=null;
         boolean checkadmin = false;
         System.out.println("\n\t*****************Welcome to Admins portal*****************************************************\n");
 
