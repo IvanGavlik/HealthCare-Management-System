@@ -6,7 +6,10 @@ import org.hcms.patient.PatientRegistrationPortal;
 
 import java.util.Scanner;
 
-public class Main {
+final class Main {
+
+	private Main() {}
+
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 

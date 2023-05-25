@@ -1,11 +1,9 @@
 package org.hcms.admin;
 
 import org.hcms.appointment.AppointmentService;
-import org.hcms.appointment.AppointmentServiceImpl;
 import org.hcms.data.Repository;
 import org.hcms.doctor.*;
 import org.hcms.patient.PatientFeedback;
-import org.hcms.patient.PatientFeedbackImpl;
 import org.hcms.patient.PatientService;
 import org.hcms.patient.PatientServiceImpl;
 
@@ -13,11 +11,11 @@ import java.util.Scanner;
 
 public final class AdminPortal {
     private AdminTerminalView adminView = new AdminTerminalView();
-    private DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
+    private DoctorService doctorService = DoctorService.DEFAULT_INSTANCE;
     private PatientService patientService = new PatientServiceImpl(Repository.getInstance());
-    private AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
-    private PatientFeedback patientFeedback = new PatientFeedbackImpl(Repository.getInstance());
-    private DoctorReportOnAppointment doctorReportOnAppointment = new DoctorReportOnAppointmentImpl(Repository.getInstance());
+    private AppointmentService appointmentService = AppointmentService.DEFAULT_INSTANCE;
+    private PatientFeedback patientFeedback = PatientFeedback.DEFAULT_INSTANCE;
+    private DoctorReportOnAppointment doctorReportOnAppointment = DoctorReportOnAppointment.DEFAULT_INSTANCE;
     public void display() {
         boolean checkadmin = false;
         System.out.println("\n\t*****************Welcome to Admins portal*****************************************************\n");

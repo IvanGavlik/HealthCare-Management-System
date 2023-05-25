@@ -9,7 +9,7 @@ import org.hcms.terminalUtil.TerminalTablePrinter;
 import java.util.*;
 import java.util.function.Function;
 
-public class DoctorTerminalView {
+final class DoctorTerminalView {
 
     public void showDoctor(Doctor doctor) {
         if(doctor ==  null) {

@@ -1,6 +1,8 @@
 package org.hcms.appointment;
 
-public class PaymentServiceImpl implements PaymentService {
+final class PaymentServiceImpl implements PaymentService {
+
+    PaymentServiceImpl() {}
     @Override
     public boolean pay(Payment payment) {
         return true; // TODO implement external service

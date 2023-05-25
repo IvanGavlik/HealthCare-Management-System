@@ -4,10 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Function;
 
-public class LoginImpl implements Login {
+final class LoginImpl implements Login {
 
     private Repository repository;
-    public LoginImpl(Repository repository) {
+    protected LoginImpl(Repository repository) {
         this.repository = repository;
     }
 

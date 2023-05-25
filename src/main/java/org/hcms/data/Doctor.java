@@ -2,7 +2,7 @@ package org.hcms.data;
 
 import java.util.Objects;
 
-public class Doctor {
+public final class Doctor {
     private int id;
     private String firstName;
     private String lastName;

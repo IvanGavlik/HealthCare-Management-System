@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
-class AdminTerminalView {
+final class AdminTerminalView {
 
     public void viewDoctors(List<Doctor> doctors) {
         List<String> header = Arrays.asList("Doctor ID", "First Name", "Last Name", "Contact Number", "Age", "Charge",

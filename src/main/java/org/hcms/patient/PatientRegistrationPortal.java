@@ -6,9 +6,8 @@ import org.hcms.terminalUtil.PersonTerminal;
 
 import java.util.Scanner;
 
-public class PatientRegistrationPortal {
-
-    PatientService patientService = new PatientServiceImpl(Repository.getInstance());
+public final class PatientRegistrationPortal {
+    private PatientService patientService = new PatientServiceImpl(Repository.getInstance());
     public void display() {
         Scanner sc = new Scanner(System.in);
 

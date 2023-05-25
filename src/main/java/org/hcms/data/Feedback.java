@@ -2,7 +2,7 @@ package org.hcms.data;
 
 import java.util.Objects;
 
-public class Feedback {
+public final class Feedback {
 
     private int id;
     private short points;

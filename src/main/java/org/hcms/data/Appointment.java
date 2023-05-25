@@ -2,7 +2,7 @@ package org.hcms.data;
 
 import java.util.Objects;
 
-public class Appointment {
+public final class Appointment {
     private int id;
     private String problem;
     private int patientId;

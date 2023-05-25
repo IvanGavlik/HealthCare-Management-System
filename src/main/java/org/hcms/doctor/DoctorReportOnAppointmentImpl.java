@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.function.Function;
 
-public class DoctorReportOnAppointmentImpl implements DoctorReportOnAppointment {
+final class DoctorReportOnAppointmentImpl implements DoctorReportOnAppointment {
     private Repository repository;
 
     private Function<ResultSet, Report> dbRowToReport = (rs) -> {
@@ -25,7 +25,7 @@ public class DoctorReportOnAppointmentImpl implements DoctorReportOnAppointment 
         }
     };
 
-    public DoctorReportOnAppointmentImpl(Repository repository) {
+    DoctorReportOnAppointmentImpl(Repository repository) {
         this.repository = repository;
     }
     @Override

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Function;
 
-public class DoctorServiceImpl implements DoctorService {
+final class DoctorServiceImpl implements DoctorService {
     private Repository repository;
     private Function<ResultSet,Doctor> dbRowToDoctor = rs -> {
         try {
@@ -29,7 +29,7 @@ public class DoctorServiceImpl implements DoctorService {
         }
     };
 
-    public DoctorServiceImpl(Repository repository) {
+    DoctorServiceImpl(Repository repository) {
         this.repository = repository;
     }
     @Override

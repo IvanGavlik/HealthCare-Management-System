@@ -3,8 +3,7 @@ package org.hcms.appointment;
 
 import java.util.*;
 
-public class Payment {
-
+public final class Payment {
 	private String name;
 	private String number;
 	private String expiryDate;

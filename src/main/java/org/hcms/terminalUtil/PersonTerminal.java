@@ -39,7 +39,6 @@ public final class PersonTerminal  {
 	private String state;
 	private String country;
 	private String address;
-
 	private PersonTerminal(String firstName, String lastName, String emailAddress, String gender, int age, String contactNumber, String city, String state, String country, String address) {
 		this.firstName = firstName;
 		this.lastName = lastName;

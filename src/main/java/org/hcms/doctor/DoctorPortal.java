@@ -1,28 +1,22 @@
 package org.hcms.doctor;
 
 import org.hcms.appointment.AppointmentService;
-import org.hcms.appointment.AppointmentServiceImpl;
-import org.hcms.data.LoginImpl;
+import org.hcms.data.Login;
 import org.hcms.data.Repository;
 import org.hcms.terminalUtil.LoginTerminal;
-
-
-
 import java.util.Scanner;
 
 
-public class DoctorPortal {
-
+public final class DoctorPortal {
     private DoctorTerminalView doctorTerminalView = new DoctorTerminalView();
-    private DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
-    private AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
-
-    private DoctorReportOnAppointment doctorReport = new DoctorReportOnAppointmentImpl(Repository.getInstance());
+    private DoctorService doctorService = DoctorService.DEFAULT_INSTANCE;
+    private AppointmentService appointmentService = AppointmentService.DEFAULT_INSTANCE;
+    private DoctorReportOnAppointment doctorReport = DoctorReportOnAppointment.DEFAULT_INSTANCE;
     public void display() {
         boolean checkDoctor = false;
         System.out.println("***************Welcome to Doctors portal******************");
         Scanner sc = new Scanner(System.in);
-        int id = LoginTerminal.login(new LoginImpl(Repository.getInstance()), "Doctor");
+        int id = LoginTerminal.login(Login.DEFAULT_INSTANCE, "Doctor");
         if(id == -1) {
             System.out.println("Invali UserID or password!!!");
             return;

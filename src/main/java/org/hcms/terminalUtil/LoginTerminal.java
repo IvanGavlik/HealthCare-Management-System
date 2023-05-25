@@ -5,6 +5,7 @@ import org.hcms.data.Login;
 import java.util.Scanner;
 
 public final class LoginTerminal {
+    private LoginTerminal() {}
     public static int login(Login login, String type) {
         Scanner sc = new Scanner(System.in);
         int id;

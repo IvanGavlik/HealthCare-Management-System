@@ -2,7 +2,7 @@ package org.hcms.data;
 
 import java.util.Objects;
 
-public class Report {
+public final class Report {
     private int id;
     private int appointmentID;
     private int patientID;

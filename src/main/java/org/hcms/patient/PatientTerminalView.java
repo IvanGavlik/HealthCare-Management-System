@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
-public class PatientTerminalView {
+final class PatientTerminalView {
 
     public void showPatient(Patient patient) {
         if(patient ==  null) {

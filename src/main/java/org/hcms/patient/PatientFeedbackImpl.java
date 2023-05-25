@@ -7,11 +7,11 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.function.Function;
 
-public class PatientFeedbackImpl implements PatientFeedback {
+final class PatientFeedbackImpl implements PatientFeedback {
 
     private Repository repository;
 
-    public PatientFeedbackImpl(Repository repository) {
+    PatientFeedbackImpl(Repository repository) {
         this.repository = repository;
     }
 

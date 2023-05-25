@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Function;
 
-public class PatientServiceImpl implements PatientService {
+final class PatientServiceImpl implements PatientService {
 
     private Repository repository;
 
-    public PatientServiceImpl(Repository repository) {
+    PatientServiceImpl(Repository repository) {
         this.repository = repository;
     }
     @Override

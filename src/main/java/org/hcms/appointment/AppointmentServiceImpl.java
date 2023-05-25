@@ -9,9 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class AppointmentServiceImpl implements AppointmentService {
+final class AppointmentServiceImpl implements AppointmentService {
     private Repository repository;
-
     private Function<ResultSet, Appointment> mapDbRowToAppointment = (rs) -> {
         try {
             Appointment a = new Appointment();
@@ -30,7 +29,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new RuntimeException();
         }
     };
-    public AppointmentServiceImpl(Repository repository) {
+    AppointmentServiceImpl(Repository repository) {
         this.repository = repository;
     }
     @Override

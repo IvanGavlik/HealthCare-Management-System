@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class TerminalTablePrinter {
+    private TerminalTablePrinter() {}
     public static <ELEMENT> void printTable(List<String> header, List<ELEMENT> rows, Function<ELEMENT, List<String>> mapper) {
         if (header == null || header.isEmpty() || mapper == null) {
             return;

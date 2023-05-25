@@ -1,16 +1,11 @@
 package org.hcms.patient;
 
 import org.hcms.appointment.AppointmentService;
-import org.hcms.appointment.AppointmentServiceImpl;
 import org.hcms.appointment.PaymentService;
-import org.hcms.appointment.PaymentServiceImpl;
 import org.hcms.data.Login;
-import org.hcms.data.LoginImpl;
 import org.hcms.data.Repository;
 import org.hcms.doctor.DoctorReportOnAppointment;
-import org.hcms.doctor.DoctorReportOnAppointmentImpl;
 import org.hcms.doctor.DoctorService;
-import org.hcms.doctor.DoctorServiceImpl;
 import org.hcms.terminalUtil.LoginTerminal;
 
 import java.util.Scanner;
@@ -19,12 +14,12 @@ import java.util.Scanner;
 public class PatientPortal {
     private PatientTerminalView patientTerminalView = new PatientTerminalView();
     private PatientService patientService = new PatientServiceImpl(Repository.getInstance());
-    private DoctorService doctorService = new DoctorServiceImpl(Repository.getInstance());
-    private AppointmentService appointmentService = new AppointmentServiceImpl(Repository.getInstance());
-    private PaymentService paymentService = new PaymentServiceImpl();
-    private DoctorReportOnAppointment doctorReportOnAppointment = new DoctorReportOnAppointmentImpl(Repository.getInstance());
-    private PatientFeedback patientFeedback = new PatientFeedbackImpl(Repository.getInstance());
-    private Login login = new LoginImpl(Repository.getInstance());
+    private DoctorService doctorService = DoctorService.DEFAULT_INSTANCE;
+    private AppointmentService appointmentService = AppointmentService.DEFAULT_INSTANCE;
+    private PaymentService paymentService = PaymentService.DEFAULT_INSTANCE;
+    private DoctorReportOnAppointment doctorReportOnAppointment = DoctorReportOnAppointment.DEFAULT_INSTANCE;
+    private PatientFeedback patientFeedback = PatientFeedback.DEFAULT_INSTANCE;
+    private Login login = Login.DEFAULT_INSTANCE;
     public void display() {
         boolean checkPatient = false;
         System.out.println("*****************Welcome to patient portal***********************");
