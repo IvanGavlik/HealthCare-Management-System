@@ -3,7 +3,6 @@ package org.hcms.data;
 import java.util.Objects;
 
 public final class Feedback {
-
     private int id;
     private short points;
     private String docNature;

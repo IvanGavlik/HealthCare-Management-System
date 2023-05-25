@@ -1,18 +1,16 @@
 package org.hcms.admin;
 
 import org.hcms.appointment.AppointmentService;
-import org.hcms.data.Repository;
 import org.hcms.doctor.*;
 import org.hcms.patient.PatientFeedback;
 import org.hcms.patient.PatientService;
-import org.hcms.patient.PatientServiceImpl;
 
 import java.util.Scanner;
 
 public final class AdminPortal {
     private AdminTerminalView adminView = new AdminTerminalView();
     private DoctorService doctorService = DoctorService.DEFAULT_INSTANCE;
-    private PatientService patientService = new PatientServiceImpl(Repository.getInstance());
+    private PatientService patientService = PatientService.DEFAULT_INSTANCE;
     private AppointmentService appointmentService = AppointmentService.DEFAULT_INSTANCE;
     private PatientFeedback patientFeedback = PatientFeedback.DEFAULT_INSTANCE;
     private DoctorReportOnAppointment doctorReportOnAppointment = DoctorReportOnAppointment.DEFAULT_INSTANCE;

@@ -1,13 +1,12 @@
 package org.hcms.data;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.function.Function;
 
 final class LoginImpl implements Login {
 
     private Repository repository;
-    protected LoginImpl(Repository repository) {
+    LoginImpl(Repository repository) {
         this.repository = repository;
     }
 
