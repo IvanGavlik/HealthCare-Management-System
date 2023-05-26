@@ -44,7 +44,7 @@ Also take a look
 <a id="ca"></a>
 
 ### Custom DB
-Application is using mysql DB, if not provided default DB is used. 
+Application is using mysql DB, if not provided default DB is used.   
 You can create your own DB and pass its connection params using configuration file. 
 
 File format  
@@ -55,7 +55,7 @@ db.password=value
 DB schema is in the ``src/main/resources/scripts/schema.sql``
 
 ### Set up application admin
-Application default admin credentials are username: *admin* password: *123*
+Application default admin credentials are username: *admin* password: *123*  
 You can change this using configuration file.
 
 File format  
@@ -64,7 +64,7 @@ admin.password=value
 
 
 ### Configuration file
-It has to have DB configuration and admin configuration. 
+It has to have DB configuration and admin configuration.  
 If one is missing application will not work.
 
 Configuration File is passed as parameter to java application.
