@@ -1,6 +1,6 @@
 # HealthCare-Management-System (hms)
 
-This repo contains source code for blog post [here]()
+This repo contains source code for blog post [Transforming bad code by applying Single Responsibility principle, Don't repeat yourself, Decoupling](https://dev.to/ivangavlik/transforming-bad-code-by-applying-single-responsibility-principle-dont-repeat-yourself-decoupling--2h2m)
 
 ## Table Of Content
 * [Description](#de)
