@@ -1,5 +1,6 @@
 package org.hcms;
 import org.hcms.admin.*;
+import org.hcms.configuration.Config;
 import org.hcms.doctor.DoctorPortal;
 import org.hcms.patient.PatientPortal;
 import org.hcms.patient.PatientRegistrationPortal;
@@ -12,6 +13,7 @@ final class Main {
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
+		Config.getInstance().loadConfig(args == null || args.length < 1 ? null : args[0]);
 
 		Scanner sc = new Scanner(System.in);
 		AdminPortal adminPortal = new AdminPortal();

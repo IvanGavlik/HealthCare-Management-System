@@ -1,6 +1,7 @@
 package org.hcms.admin;
 
 import org.hcms.appointment.AppointmentService;
+import org.hcms.configuration.Config;
 import org.hcms.doctor.*;
 import org.hcms.patient.PatientFeedback;
 import org.hcms.patient.PatientService;
@@ -101,7 +102,8 @@ public final class AdminPortal {
         System.out.print("\tPassword-->");
         pd=sc.next();
 
-        if (!"abc".equals(un)  || !"1234".equals(pd)) {
+        Config config = Config.getInstance();
+        if (!config.getProperty(Config.ADMIN_NAME).equals(un) || !config.getProperty(Config.ADMIN_PASSWORD).equals(pd)) {
             System.out.println("Invalid Username or Password");
             return false;
         }

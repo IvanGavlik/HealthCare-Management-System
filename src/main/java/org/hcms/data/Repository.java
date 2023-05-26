@@ -10,7 +10,8 @@ public final class Repository {
     private Connection connection;
 
     private Repository() {
-        this.connection = ConnectionProviderDefault.getCon();
+        this.connection = ConnectionProviderDefault.getCon()
+                .orElseThrow(RepositoryException::new);
     }
     private Repository(Connection connection) {
         this.connection = connection;
@@ -51,7 +52,7 @@ public final class Repository {
     // TODO CHECK QUERY RETURN TYPES IN ALL PLACES WHERE IS USED
     public <RESULT_ITEM> List<RESULT_ITEM> executeQuery(String query, Function<ResultSet, RESULT_ITEM> function) {
         this.checkConnection();
-        List result = new ArrayList();
+        List<RESULT_ITEM> result = new ArrayList<>();
         try {
             Statement st= this.connection.createStatement();
             ResultSet resultSet = st.executeQuery(query);
@@ -73,7 +74,7 @@ public final class Repository {
     private void checkConnection() {
         try {
             if (connection == null || connection.isClosed()) {
-                this.connection = ConnectionProviderDefault.getCon();
+                this.connection = ConnectionProviderDefault.getCon().orElseThrow(RepositoryException::new);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
